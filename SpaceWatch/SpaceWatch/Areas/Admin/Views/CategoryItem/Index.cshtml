@@ -1,0 +1,74 @@
+﻿@model IEnumerable<CategoryItem>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="section">
+    <h3 class="section-header text-orange">All Media Items</h3>
+    <h5 class="text-black-50">Category: <strong>@ViewBag.CategoryTitle</strong></h5>
+    <hr class="section-divider" />
+    <p>
+        <partial name="_CreateButtonPartial" model="@ViewBag.CategoryId" />
+
+        <a class="btn btn-outline-dark" asp-controller="Category" asp-action="Index"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to all Categories</a>
+        @*asp-route-categoryId="@ViewBag.CategoryId"*@
+    </p>
+    <div class="col-md-12">
+        <table class="table" style="width:fit-content">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th class="col-md-4">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th class="col-md-3">
+                        @Html.DisplayNameFor(model => model.DateTimeItemReleased)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="vertical-align:middle">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td style="vertical-align:middle" class="col-md-4">
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td style="vertical-align:middle" class="col-md-3">
+                            <div class="card p-1">
+                                @Html.DisplayFor(modelItem => item.DateTimeItemReleased)
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <div class="btn-group-vertical flex-column">
+                                <partial name="_RUDButtonsPartial" model="@item.Id" />
+
+                                @if (item.ContentId == 0)
+                                {
+                                    <a asp-controller="Content" asp-action="Create"
+                                       asp-route-categoryItemId="@item.Id" asp-route-categoryId="@item.CategoryId" class="btn btn-outline-success"><i class="fa-solid fa-square-plus mr-2 ml-2"></i>Add Content</a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Content" asp-action="Edit"
+                                       asp-route-categoryItemId="@item.Id" asp-route-categoryId="@item.CategoryId" class="btn btn-outline-warning"><i class="fa-solid fa-pen-to-square mr-2 ml-2"></i>Edit Content</a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <p>
+        <partial name="_CreateButtonPartial" model="@ViewBag.CategoryId" />
+
+        <a class="btn btn-outline-dark" asp-controller="Category" asp-action="Index"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to all Categories</a>
+        @*asp-route-categoryId="@ViewBag.CategoryId"*@
+    </p>
+</div>

@@ -1,0 +1,67 @@
+﻿@model IEnumerable<SpaceWatch.Infrastructure.Data.Entities.Category>
+@using SpaceWatch.Infrastructure.Data.Extensions
+@using SpaceWatch.Areas.Admin.Models
+
+<div class="section">
+    <h3 class="mt-3 section-header"><i class="fas fa-user-check mr-2 ml-2 text-black-50"></i>Add Users to Media Genre</h3>
+    <hr class="section-divider" />
+    <form id="MembersToCategory" asp-action="Index">
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="card-body">
+                        <h5 class="text-black-50 bg-smoke p-2"><i class="fas fa-sitemap mr-2 ml-2"></i>Available Categories/Genres</h5>
+                        <select id="CategoryId" name="CategoryId" class="form-control" asp-items="@Model.ConvertToSelectList(0)">
+                            <option value="0">---Please Choose From the List---</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="alert_Placeholder">
+
+        </div>
+        <hr />
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <h5 class="section-header"><i class="fas fa-user-friends mr-2 ml-2 text-black-50"></i>Users</h5>
+                <div class="form-group">
+                    <div id="UsersCheckList">
+                        <partial name="_UsersListViewPartial"
+                                 model="new UserCategoryListModel { CategoryId = 0, Users = null, UsersSelected=null }" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group text-right">
+                    <button type="button" id="SaveSelectedUsers" name="SaveSelectedUsers" class="btn btn-lg btn-orchid">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="progress collapse">
+    <div class="progress-bar progress-bar-striped progress-bar-animated bg-darkorchid text-white" role="progressbar"
+         aria-valuenow="75" aria-valuemax="100" aria-valuemin="0" style="width:100%; height:100%">
+        <span style="font-size:2rem;">Saving Data...</span>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="alert alert-orchid alert-dismissible collapse text-center" style="font-size:2rem;" role="alert">
+        The data has been saved successfully!
+    </div>
+</div>
+
+@section Scripts{ 
+    <script src="~/js/UsersToCategory.js"></script>
+    <script src="~/js/BootstrapAlerts.js"></script>
+}

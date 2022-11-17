@@ -1,0 +1,115 @@
+﻿@model CategoryDetailsModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (Model.GroupedCategoryItemsByCategoryModels != null)
+{
+    <div class="section">
+        @if (Model.GroupedCategoryItemsByCategoryModels.Count() > 0)
+        {
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <h3 class="section-header"><i class="fa-brands fa-youtube mr-2 ml-2 text-black-50"></i>Your Media</h3>
+                    <hr class="section-divider" />
+                    <div class="col-md-12 text-right">
+                        <a asp-controller="CategoriesToUser" asp-action="Index" class="btn btn-outline-orchid">Subscribe to New Media</a>
+                    </div>
+                    <hr />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    @foreach (var cat in Model.GroupedCategoryItemsByCategoryModels)
+                    {
+                        <div class="card mt-2">
+                            <h5 class="card-header card-title highlighted-text bolder bg-smoke shadow-sm" style="cursor:pointer" data-toggle="collapse" data-target="#collapse_@cat.Id"
+                                aria-expanded="false" aria-controls="collapse_@cat.Id">
+                                <i class="fa-solid fa-angle-down mr-2 ml-2 text-black-50"></i>@cat.Title
+                            </h5>
+                            <div id="collapse_@cat.Id" class="collapse" aria-expanded="false" aria-controls="collapse_@cat.Id">
+                                <hr />
+                                @foreach (var item in cat.Items)
+                                {
+                                    <div class="card-group current-element p-2">
+                                        <div class="m-1 ">
+                                            <div class="mt-2">
+                                                <img src="@item.MediaImagePath" width="150" class="img-thumbnail float-left mr-2" />
+                                            </div>
+                                        </div>
+                                        <div class="m-1 ">
+                                            <h5 class="card-title mt-2">
+                                                <a class="text-black-50 bolder" asp-controller="Content" asp-action="Index" asp-route-CategoryItemId="@item.CategoryItemId">@item.CategoryItemTitle</a>
+                                            </h5>
+                                        </div>
+                                        <div class="m-1">
+                                            <p class="text-black-50 card-text mt-2">
+                                                @item.CategoryItemDescription
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="section-header text-center border-bottom border-bottom-thick border-dark">
+                        You're currently not subscribed to any media content.
+                    </h4>
+                    <hr class="section-divider" />
+                </div>
+            </div>
+            <div class="container-box">
+                <div class="container-content">
+                    <div class="col-md-12">
+                         <img src="~/images/siteAssets/notSubscribed.png" class="img-fluid" width="250" />
+                    </div>
+                </div>
+            </div>
+            <hr class="section-divider" />
+            <div class="col-md-12 text-right">
+                 <a asp-controller="CategoriesToUser" asp-action="Index" class="btn btn-outline-orchid">Subscribe to New Media</a>
+            </div>
+            <hr />        
+        }
+    </div>
+}
+else
+{
+    <partial name="_DefaultHomePageContentPartial" model="@Model.Categories" />
+}
+
+<div class="modal fade" id="UserLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <partial name="_UserLoginPartial" model="new LoginModel {
+            Email = String.Empty,
+            Password = String.Empty,
+            RememberMe = false }" />
+</div>
+<div class="modal fade" id="UserRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <partial name="_UserRegistrationPartial" model="new RegistrationModel {
+            Email = String.Empty,
+            Password = String.Empty,
+            ConfirmPassword = String.Empty,
+            FirstName = String.Empty,
+            LastName = String.Empty,
+            Address1 = String.Empty,
+            Address2 = String.Empty,
+            PhoneNumber = String.Empty,
+            PostCode = String.Empty,
+            AcceptUserAgreement = false }" />
+</div>
+
+@section Scripts{
+
+    @{
+        await Html.RenderPartialAsync("_AuthScriptsPartial");
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

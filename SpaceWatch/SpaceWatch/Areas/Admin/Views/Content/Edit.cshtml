@@ -1,0 +1,45 @@
+﻿@model Content
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="section">
+    <h3 class="section-header">Edit Content</h3>
+    <hr class="section-divider" />
+    <h5>Category/Genre: <strong class="text-black-50">@ViewBag.CategoryTitle</strong></h5>
+    <h5>Media Item: <strong class="text-black-50">@ViewBag.CategoryItemTitle</strong></h5>
+    <hr class="section-divider" />
+    <div class="row mt-3">
+        <div class="col-md-10">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="CategoryId" />
+                <input type="hidden" asp-for="CatItemId" />
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="HtmlContent" class="control-label"></label>
+                    <textarea asp-for="HtmlContent" rows="10" class="form-control"></textarea>
+                    <span asp-validation-for="HtmlContent" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VideoLink" class="control-label"></label>
+                    <input asp-for="VideoLink" class="form-control" />
+                    <span asp-validation-for="VideoLink" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-orchid" /> |
+                    <a class="btn btn-outline-dark" asp-action="Index" asp-controller="CategoryItem" asp-route-categoryId="@Model.CategoryId"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

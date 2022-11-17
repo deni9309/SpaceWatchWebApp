@@ -1,0 +1,275 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+.background {
+    background-image: url("/images/siteAssets/background.jpg");
+    background-attachment:fixed;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+.bg-darkorchid{
+    background-color:darkorchid;
+    color:white;
+}
+.bg-darkorchid:hover {
+    background-color: indigo;
+    color: white;
+}
+.text-lg-1-1-rem{
+    font-size:1.1rem;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.main-default{
+    margin-top:120px;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+/*-----------------------------------------------------------------*/
+.highlighted-text{
+    color: #9ec000;
+}
+
+.bolder {
+    font-weight:700;
+}
+
+.progress, .alert-orchid {
+    position: fixed;
+    height: 100px;
+    top: 50%;
+    left: 0%;
+    width: 90%;
+    margin-left: 5%;
+}
+
+.videoContainer {
+    overflow: hidden;
+    padding-top: 56.25%; /*16:9*/
+    position: relative;
+}
+    .videoContainer iframe {
+        border: medium solid #9ec000;
+        height: 100%;
+        width: 100%;
+        left: 0%;
+        top: 0%;
+        position: absolute;
+    }
+
+
+    /* Hero section */
+.hero {
+    position: relative;
+}
+.hero-heading {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    text-align: center;
+    width: 250px;
+    height: 150px;
+    background-color:rgba(50,50,50,0.7);
+    padding:10px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+.hero-heading-text{
+    color:white;
+    font-size:1.1rem;
+    text-shadow:1px 1px 1px black;
+}
+.hero-register-button {
+    margin: 5px;
+    font-size: .9rem;
+    cursor: pointer;
+}
+
+@media screen and (min-width:700px){
+    .hero-heading {
+        width: 90%;
+        height: 250px;
+        padding: 20px;
+    }
+    .hero-heading-text {
+        color: white;
+        font-size: 2.2rem;
+        text-shadow: 1px 1px 1px black;
+    }
+    .hero-register-button {
+        font-size: 1.2rem;
+        margin: 20px;
+        cursor: pointer;
+    }
+}
+
+@media screen and (min-width:800px) {
+    .hero-heading {
+        width: 85%;
+        height: 250px;
+        padding: 20px;
+    }
+}
+
+.section {
+    margin-bottom: 20px;
+    background-color: whitesmoke;
+    padding:10px;
+}
+.section-divider{
+    height:2px;
+    background-color:rgb(255 95 20);
+}
+.section-divider-dark {
+    height: 1px;
+    background-color: lightgray;
+}
+.section-header {
+    padding: 20px;
+    color: rgb(255 95 20);
+    background-color: #dedede;
+}
+.text-orange {
+    color: rgb(255 95 20);
+}
+
+.bg-smoke {
+    background-color: #dedede;
+}
+
+a:hover .card {
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.2), 0px 6px 20px 0px rgba(0,0,0,0.19);
+    transition:box-shadow 0.3s ease-in-out;
+}
+
+.current-element:hover {
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.2), 0px 6px 20px 0px rgba(0,0,0,0.19);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.valing-middle{
+   
+    vertical-align:middle;
+
+}
+
+
+/*Categories to user table*/
+
+.container-box {
+    position: relative;
+}
+
+.container-content {
+    position: inherit;
+    inset: 0;
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    padding: 1px;
+}
+
+.container-content-text {
+    color: white;
+    font-size: 1rem;
+}
+
+@media screen and (min-width:700px) {
+    .container-content {
+        width: 90%;
+        height: auto;
+        padding: 1px;
+        text-align: center;
+        font-size: 1rem;
+    }
+        .container-content-text {
+            color: white;
+            font-size: 1rem;
+        }
+}
+
+@media screen and (min-width:800px) {
+    .container-content {
+        width: 70%;
+        height: auto;
+        padding: 1px;      
+        font-size: 1.1rem;
+        text-align: center;
+    }
+}

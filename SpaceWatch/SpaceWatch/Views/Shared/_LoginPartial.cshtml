@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SpaceWatch.Infrastructure.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item text-lg-1-1-rem">
+        <a  class="btn rounded-0 nav-link bg-dark text-white text-lg-1-1-rem" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserAsync(User).Result?.FirstName!</a>
+    </li>
+    <li class="nav-item text-lg-1-1-rem">
+        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button  type="submit" class="btn rounded-0 nav-link bg-dark text-white text-lg-1-1-rem"><i class="fas fa-sign-out-alt mr-1 ml-1"></i>Logout</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item text-lg-1-1-rem">
+        <a class="btn rounded-0 nav-link bg-dark text-white text-lg-1-1-rem" asp-area="Identity" asp-page="/Account/Register" data-toggle="modal" data-target="#UserRegistrationModal"><i class="fas fa-user-plus mr-1 ml-1"></i>Register</a>
+    </li>
+    <li class="nav-item text-lg-1-1-rem">
+        <a class="btn rounded-0 nav-link bg-dark text-white text-lg-1-1-rem" asp-area="Identity" asp-page="/Account/Login" data-toggle="modal" data-target="#UserLoginModal"><i class="fas fa-key  mr-1 ml-1"></i>Login</a>
+    </li>
+}
+</ul>

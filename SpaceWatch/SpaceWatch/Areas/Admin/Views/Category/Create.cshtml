@@ -1,0 +1,42 @@
+﻿@model Category
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="section">
+    <h3 class="section-header">Create new Category</h3>
+    <hr class="section-divider" />
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" rows="4" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ThumbnailImagePath" class="control-label"></label>
+                    <input asp-for="ThumbnailImagePath" class="form-control" />
+                    <span asp-validation-for="ThumbnailImagePath" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-orchid" /> |
+                    <a class="btn btn-outline-dark" asp-action="Index"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }

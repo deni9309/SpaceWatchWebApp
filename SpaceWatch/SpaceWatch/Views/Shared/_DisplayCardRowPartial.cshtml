@@ -1,0 +1,19 @@
+﻿
+@model IEnumerable<Category>
+
+<div class="row mt-3">
+    @foreach (Category item in Model)
+    {
+        <div class="col-md-3">
+            <a href="#" class="text-dark text-decoration-none RegisterLink" data-categoryId="@item.Id">
+                <div class="card">
+                    <img src="@item.ThumbnailImagePath" class="img-thumbnail" alt="@item.Title" />
+                    <div class="card-body">
+                        <h5 class="card-title bolder highlighted-text">@item.Title</h5>
+                        <p class="card-text text-lg-1-1-rem">@item.Description</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>

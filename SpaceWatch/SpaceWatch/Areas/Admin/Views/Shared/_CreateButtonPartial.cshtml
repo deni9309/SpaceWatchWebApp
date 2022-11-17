@@ -1,0 +1,12 @@
+﻿@model int
+@{
+
+    if (Model == 0)
+    {
+        <a class="btn btn-orchid" asp-action="Create"><i class="fa-solid fa-square-plus mr-2"></i>Create New</a>
+    }
+    else
+    {
+        <a class="btn btn-orchid" asp-action="Create" asp-route-categoryId="@Model"><i class="fa-solid fa-square-plus mr-2"></i>Create New</a>
+    }
+}

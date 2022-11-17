@@ -1,0 +1,43 @@
+﻿@model CategoryItem
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<div class="section">
+    <h3 class="section-header">Delete Media Item</h3>
+    <hr class="section-divider" />
+    <h5 class="text-black-50">Are you sure you want to delete this media?</h5>
+    <hr class="section-divider" />
+    <div class="col-md-12 p-2">
+        <h5>Category/Genre: <strong class="text-black-50">@ViewBag.CategoryTitle</strong></h5>
+        <dl class="row mt-3">
+            <dt class="col-sm-2">
+                <span class="text-lg-1-1-rem">@Html.DisplayNameFor(model => model.Title)</span>
+            </dt>
+            <dd class="col-sm-10">
+                <strong class="text-lg-1-1-rem highlighted-text">@Html.DisplayFor(model => model.Title)</strong>
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DateTimeItemReleased)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DateTimeItemReleased)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-12 p-2">
+        <div class="row p-2">
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Delete" class="btn btn-danger" /> |
+                <a class="btn btn-outline-dark" asp-action="Index" asp-route-categoryId="@Model.CategoryId"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to List</a>
+            </form>
+        </div>
+    </div>
+</div>
