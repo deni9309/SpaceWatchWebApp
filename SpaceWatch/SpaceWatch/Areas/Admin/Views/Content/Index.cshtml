@@ -1,49 +1,48 @@
 ﻿@model IEnumerable<Content>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
 <h2>Available Content</h2>
-
 <p>
-    <a class="btn btn-orchid" asp-action="Create">Create a Content</a>
+	<a class="btn btn-orchid" asp-action="Create">Create a Content</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-           
-            <th>
-                @Html.DisplayNameFor(model => model.HtmlContent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VideoLink)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td style="vertical-align:middle">
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-           
-            <td style="vertical-align:middle">
-                @Html.DisplayFor(modelItem => item.HtmlContent)
-            </td>
-            <td style="vertical-align:middle">
-                @Html.DisplayFor(modelItem => item.VideoLink)
-            </td>
-            <td style="vertical-align:middle" width="200">
-                <div class="btn-group-vertical">
-                    <partial name="_RUDButtonsPartial" model="@item.Id" />
-                </div>
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Title)
+			</th>
+
+			<th>
+				@Html.DisplayNameFor(model => model.HtmlContent)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.VideoLink)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td style="vertical-align:middle">
+					@item.Title
+				</td>
+				<td style="vertical-align:middle">
+					@item.HtmlContent
+				</td>
+				<td style="vertical-align:middle">
+					@item.VideoLink
+				</td>
+				<td style="vertical-align:middle" width="200">
+					<div class="btn-group-vertical">
+						<partial name="_RUDButtonsPartial" model="@item.Id" />
+					</div>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>

@@ -19,13 +19,11 @@
                     <td style="text-align:center;">
                         @if (Model.UsersSelected != null && Model.UsersSelected.Contains(user, new CompareUsers()))
                         {
-                            <input type="checkbox" id="UsersSelected" name="UsersSelected" class="form-check-input" 
-                                   value="@user.Id" checked />
+                            <input type="checkbox" id="UsersSelected" name="UsersSelected" class="form-check-input" value="@user.Id" checked />
                         }
                         else
                         {
-                            <input type="checkbox" id="UsersSelected" name="UsersSelected" class="form-check-input"
-                                   value="@user.Id" />
+                            <input type="checkbox" id="UsersSelected" name="UsersSelected" class="form-check-input" value="@user.Id" />
                         }
                     </td>
                     <td>@user.FirstName</td>

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SpaceWatch.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+	[Area("Admin")]
     [Authorize(Roles = "Admin")]
     public class UsersToCategoryController : Controller
     {

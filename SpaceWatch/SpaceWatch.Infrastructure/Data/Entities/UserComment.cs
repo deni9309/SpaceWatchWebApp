@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,5 +22,9 @@ namespace SpaceWatch.Infrastructure.Data.Entities
         [ForeignKey(nameof(Content))]
         public int ContentId { get; set; }
         public Content Content { get; set; }
+
+        [Required]
+        [DefaultValue(true)]
+        public bool IsActive { get; set; } = true;
     }
 }

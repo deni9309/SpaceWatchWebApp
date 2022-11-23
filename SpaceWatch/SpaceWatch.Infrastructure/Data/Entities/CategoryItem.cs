@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace SpaceWatch.Infrastructure.Data.Entities
 
         [NotMapped]
         [Display(Name = "Media Kind")]
-        public virtual ICollection<SelectListItem> MediaTypes { get; set; }
+        public IEnumerable<SelectListItem> MediaTypes { get; set; }
 
         [Display(Name = "Original Release Date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
@@ -45,6 +46,11 @@ namespace SpaceWatch.Infrastructure.Data.Entities
         [NotMapped]
         public int ContentId { get; set; }
         [NotMapped]
+
         private DateTime _releaseDate = DateTime.MinValue;
+
+        [Required]
+        [DefaultValue(true)]
+        public bool IsActive { get; set; } = true;
     }
 }

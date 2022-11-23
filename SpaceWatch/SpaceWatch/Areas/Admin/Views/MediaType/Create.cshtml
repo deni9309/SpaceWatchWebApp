@@ -1,4 +1,4 @@
-﻿@model MediaType
+﻿@model MediaTypeViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -9,7 +9,7 @@
     <hr class="section-divider" />
     <div class="row mt-3">
         <div class="col-md-6">
-            <form asp-action="Create">
+            <form asp-controller="MediaType" asp-action="Create" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Title" class="control-label"></label>
@@ -22,10 +22,11 @@
                     <span asp-validation-for="ThumbnailImagePath" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-orchid" /> |
+                    <input type="submit" class="btn btn-orchid" value="Create" /> |
                     <a class="btn btn-outline-dark" asp-action="Index"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to List</a>
                 </div>
             </form>
+            
         </div>
     </div>
 </div>

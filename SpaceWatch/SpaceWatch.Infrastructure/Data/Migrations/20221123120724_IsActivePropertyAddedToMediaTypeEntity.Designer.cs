@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpaceWatch.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using SpaceWatch.Infrastructure.Data;
 namespace SpaceWatch.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221123120724_IsActivePropertyAddedToMediaTypeEntity")]
+    partial class IsActivePropertyAddedToMediaTypeEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,9 +260,6 @@ namespace SpaceWatch.Infrastructure.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<string>("ThumbnailImagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -292,9 +291,6 @@ namespace SpaceWatch.Infrastructure.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<int>("MediaTypeId")
                         .HasColumnType("int");
 
@@ -325,9 +321,6 @@ namespace SpaceWatch.Infrastructure.Data.Migrations
 
                     b.Property<string>("HtmlContent")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -411,9 +404,6 @@ namespace SpaceWatch.Infrastructure.Data.Migrations
 
                     b.Property<DateTime>("DatePosted")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .IsRequired()

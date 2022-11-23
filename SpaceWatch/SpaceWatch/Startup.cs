@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SpaceWatch.Core.Contracts;
+using SpaceWatch.Core.Services;
+using SpaceWatch.Infrastructure.Common;
 using SpaceWatch.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -36,6 +39,8 @@ namespace SpaceWatch
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IMediaTypeService, MediaTypeService>();
             services.AddScoped<IDataFunctions, DataFunctions>();
 
             services.AddControllersWithViews();

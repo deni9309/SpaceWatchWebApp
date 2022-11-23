@@ -1,5 +1,6 @@
 ﻿
 using SpaceWatch.Infrastructure.Data.Extensions.Interfaces;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,5 +25,9 @@ namespace SpaceWatch.Infrastructure.Data.Entities
         public virtual ICollection<CategoryItem> CategoryItems { get; set; }
 
         public virtual ICollection<UserCategory> UserCategories { get; set; }
+
+        [Required]
+        [DefaultValue(true)]
+        public bool IsActive { get; set; } = true;
     }
 }

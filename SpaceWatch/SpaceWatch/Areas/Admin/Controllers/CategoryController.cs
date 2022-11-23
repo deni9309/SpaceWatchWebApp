@@ -21,9 +21,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
         // GET: CategoryController
         public async Task<ActionResult> Index()
         {
-            return View(
-                await _context.Categories.ToListAsync()
-                );
+            return View(await _context.Categories.ToListAsync());
         }
 
         // GET: CategoryController/Details/5

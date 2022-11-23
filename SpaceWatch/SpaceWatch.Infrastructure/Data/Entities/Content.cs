@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -31,5 +32,9 @@ namespace SpaceWatch.Infrastructure.Data.Entities
 
         [NotMapped]
         public int CategoryId { get; set; }
+
+        [Required]
+        [DefaultValue(true)]
+        public bool IsActive { get; set; } = true;
     }
 }

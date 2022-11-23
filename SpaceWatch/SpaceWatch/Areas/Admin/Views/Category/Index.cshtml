@@ -1,55 +1,56 @@
 ﻿@model IEnumerable<Category>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
 <div class="section">
-    <h3 class="section-header text-orange">All Categories</h3>
-    <hr class="section-divider" />
-    <p>
-        <partial name="_CreateButtonPartial" model="0" />
-    </p>
-    <div class="col-md-12">
-        <table class="table" style="width:fit-content">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Title)
-                    </th>
-                    <th class="col-md-4">
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ThumbnailImagePath)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                <tr>
-                    <td style="vertical-align:middle">
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td style="vertical-align:middle" class="col-md-4">
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td style="vertical-align:middle">
-                        <div class="card p-1">
-                            @Html.DisplayFor(modelItem => item.ThumbnailImagePath)
-                        </div>
-                    </td>
-                    <td style="vertical-align:middle">
-                        <div class="btn-group-vertical flex-column">
-                            <partial name="_RUDButtonsPartial" model="@item.Id" />
-                            <a asp-area="Admin" asp-controller="CategoryItem" asp-action="Index" asp-route-categoryId="@item.Id" class="btn btn-outline-orchid">Update Items</a>
-                        </div>
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+	<h3 class="section-header text-orange">All Categories</h3>
+	<hr class="section-divider" />
+	<p>
+		<partial name="_CreateButtonPartial" model="0" />
+	</p>
+	<div class="col-md-12">
+		<table class="table" style="width:fit-content">
+			<thead>
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.Title)
+					</th>
+					<th class="col-md-4">
+						@Html.DisplayNameFor(model => model.Description)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.ThumbnailImagePath)
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td style="vertical-align:middle">
+							@item.Title
+						</td>
+						<td style="vertical-align:middle" class="col-md-4">
+							@item.Description
+						</td>
+						<td style="vertical-align:middle">
+							<div class="card p-1">
+								@item.ThumbnailImagePath
+							</div>
+						</td>
+						<td style="vertical-align:middle">
+							<div class="btn-group-vertical flex-column">
+								<partial name="_RUDButtonsPartial" model="@item.Id" />
+								<a asp-area="Admin" asp-controller="CategoryItem" asp-action="Index" asp-route-categoryId="@item.Id"
+							   class="btn btn-outline-orchid">Update Items</a>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
 </div>
