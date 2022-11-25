@@ -29,7 +29,7 @@
 			<form asp-action="Delete" method="post">
 				<input type="hidden" asp-for="Id" />
 				<input onclick="return confirm('This action can not be undone!\nAre you sure you want to proceed?');" type="submit" value="Delete" class="btn btn-danger" /> |
-				<a class="btn btn-outline-dark" asp-route-id="@Model.Id" asp-action="Edit"><i class="fa-solid fa-pen-to-square mr-1 ml-1"></i>Go to Edit Page</a>
+				<a class="btn btn-outline-dark" asp-route-id="@Model.Id" asp-action="Edit"><i class="fa-solid fa-pen-to-square mr-1 ml-1"></i>Go to Edit Page</a> |
 				<a class="btn btn-outline-dark" asp-action="Index"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to List</a>
 			</form>
 		</div>

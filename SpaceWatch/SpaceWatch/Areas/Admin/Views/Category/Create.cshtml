@@ -1,4 +1,4 @@
-﻿@model Category
+﻿@model CategoryViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -9,7 +9,7 @@
     <hr class="section-divider" />
     <div class="row mt-3">
         <div class="col-md-6">
-            <form asp-action="Create">
+            <form asp-action="Create" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Title" class="control-label"></label>

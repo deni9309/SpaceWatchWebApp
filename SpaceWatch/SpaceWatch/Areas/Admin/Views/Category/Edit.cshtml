@@ -1,4 +1,4 @@
-﻿@model Category
+﻿@model CategoryViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -9,7 +9,7 @@
     <hr class="section-divider" />
     <div class="row mt-3">
         <div class="col-md-6">
-            <form asp-action="Edit">
+            <form method="post" asp-controller="Category" asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
                 <div class="form-group">

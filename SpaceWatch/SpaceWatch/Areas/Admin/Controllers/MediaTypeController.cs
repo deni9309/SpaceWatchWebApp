@@ -1,13 +1,9 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.EntityFrameworkCore;
 using SpaceWatch.Core.Contracts;
 using SpaceWatch.Core.Models;
-using SpaceWatch.Infrastructure.Data;
-using SpaceWatch.Infrastructure.Data.Entities;
+
 
 namespace SpaceWatch.Areas.Admin.Controllers
 {
@@ -16,12 +12,12 @@ namespace SpaceWatch.Areas.Admin.Controllers
     public class MediaTypeController : Controller
     {
 
-        private readonly ApplicationDbContext _context;
+       // private readonly ApplicationDbContext _context;
         private readonly IMediaTypeService _mediaTypeService;
 
-        public MediaTypeController(ApplicationDbContext context, IMediaTypeService mediaTypeService)
+        public MediaTypeController(IMediaTypeService mediaTypeService)
         {
-            _context = context;
+           // _context = context;
             _mediaTypeService = mediaTypeService;
         }
 
@@ -123,7 +119,6 @@ namespace SpaceWatch.Areas.Admin.Controllers
             if ((await _mediaTypeService.MediaTypeExists(model.Id)) == false)
             {
                 ModelState.AddModelError("", "Media Type does not exist!");
-
                 return View(model);
             }
 
@@ -223,9 +218,9 @@ namespace SpaceWatch.Areas.Admin.Controllers
             //return RedirectToAction(nameof(Index));
         }
 
-        private bool MediaTypeExists(int id)
-        {
-            return _context.MediaTypes.Any(e => e.Id == id);
-        }
+        //private bool MediaTypeExists(int id)
+        //{
+        //    return _context.MediaTypes.Any(e => e.Id == id);
+        //}
     }
 }

@@ -1,41 +1,38 @@
-﻿@model Category
+﻿@model CategoryViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
 <div class="section">
     <h3 class="section-header">Details</h3>
-    <h5>Category <strong class="text-black-50">@Html.DisplayFor(model => model.Title)</strong></h5>
+    <h5 class="pl-2">Category <strong class="text-black-50">@Model.Title</strong></h5>
     <hr class="section-divider" />
-    <div class="col-md-12 p-2">
-        <dl class="row mt-3">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Title)
+        <dl class="row flex-column p-2 mt-3">
+            <dt class="col-4">
+                Title
             </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Title)
+            <dd class="col-6">
+                @Model.Title
             </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Description)
+            <dt class="col-4">
+                Description
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Description)
+                @Model.Description
             </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ThumbnailImagePath)
+            <dt class="col-4 mb-2">
+                Image
             </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ThumbnailImagePath)
+            <dd class="col-sm-10">       
+                    <img src="@Model.ThumbnailImagePath" class="img-thumbnail" style="width:30em" alt="@Model.Title" />
             </dd>
         </dl>
-        <div class="card-img-top">
-            <img src="@Model.ThumbnailImagePath" class="img-thumbnail" style="width:30em" alt="@Model.Title" />
-        </div>
-    </div> 
-    <div class="col-md-12 p-2">
-        <div class="row p-2">
+        
+    <div class="row flex-column p-2 mt-3">
+        <div class="col-4">
             <a class="btn btn-orchid" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> | 
-            <a class="btn btn-outline-dark" asp-action="Index"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to List</a>
+            <a class="btn btn-outline-dark" asp-action="Index"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to List</a> |
+            <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
         </div>
     </div>
 </div>

@@ -18,7 +18,7 @@ namespace SpaceWatch.Core.Models
 		[Display(Name = "Thumbnail Image Path")]
 		public string ThumbnailImagePath { get; set; } = null!;
 
-		public IEnumerable<CategoryItemViewModel> CategoryItems { get; set; } = new List<CategoryItemViewModel>();
+	//	public IEnumerable<CategoryItemViewModel>? CategoryItems { get; set; }
 
 	}
 }

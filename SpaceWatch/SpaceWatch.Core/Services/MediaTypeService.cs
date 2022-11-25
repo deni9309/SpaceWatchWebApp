@@ -14,10 +14,10 @@ namespace SpaceWatch.Core.Services
 {
 	public class MediaTypeService : IMediaTypeService
 	{
-		public readonly IRepository _repo;
+		private readonly IRepository _repo;
 		public MediaTypeService(IRepository repository)
 		{
-			_repo= repository;
+			_repo = repository;
 		}
 
         public async Task Add(MediaTypeViewModel model)

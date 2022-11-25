@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using SpaceWatch.Core.Contracts;
+using SpaceWatch.Core.Models;
+using SpaceWatch.Core.Services;
 using SpaceWatch.Infrastructure.Data;
-using SpaceWatch.Infrastructure.Data.Entities;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SpaceWatch.Areas.Admin.Controllers
@@ -12,132 +12,206 @@ namespace SpaceWatch.Areas.Admin.Controllers
     [Authorize(Roles ="Admin")]
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public CategoryController(ApplicationDbContext context)
+       // private readonly ApplicationDbContext _context;
+        private readonly ICategoryService _categoryService;
+        public CategoryController(ICategoryService categoryService)
         {
-            _context = context;
+            _categoryService = categoryService;
         }
         
         // GET: CategoryController
         public async Task<ActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await _categoryService.GetAll());
         }
 
         // GET: CategoryController/Details/5
-        public async Task<ActionResult> Details(int? id)
+        [HttpGet]
+        public async Task<ActionResult> Details(int id)
         {
-            if (id == null)
+            if((await _categoryService.CategoryExists(id)) == false)
             {
-                return NotFound();
+                return RedirectToAction("Index");
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(c => c.Id == id);
+            var model = await _categoryService.CategoryDetailsById(id);
 
-            if(category==null)
-            {
-                return NotFound();
-            }
-            return View(category);
+            return View(model);
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var category = await _context.Categories
+            //    .FirstOrDefaultAsync(c => c.Id == id);
+
+            //if(category==null)
+            //{
+            //    return NotFound();
+            //}
+            //return View(category);
         }
 
         // GET: CategoryController/Create
+        [HttpGet]
         public ActionResult Create()
         {
-            return View();
+            var model = new CategoryViewModel();
+
+            return View(model);
         }
 
         // POST: CategoryController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("Id, Title, Description, ThumbnailImagePath")] Category category)
+      //  [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(CategoryViewModel model)
         {
-            if (ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(model);
             }
-            return View(category);
+
+            await _categoryService.Add(model);
+
+            return RedirectToAction(nameof(Index));
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(category);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //return View(category);
         }
 
         // GET: CategoryController/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<ActionResult> Edit(int id)
         {
-            if (id == null)
+            if ((await _categoryService.CategoryExists(id)) == false)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var category = await _categoryService.CategoryDetailsById(id);
+
+            var model = new CategoryViewModel()
             {
-                return NotFound();
-            }
-            return View(category);
+                Id = category.Id,
+                ThumbnailImagePath = category.ThumbnailImagePath,
+                Title = category.Title,
+                Description = category.Description
+            };
+
+            return View(model);
+            //var category = await _context.Categories.FindAsync(id);
+            //if (category == null)
+            //{
+            //    return NotFound();
+            //}
+            //return View(category);
         }
 
         // POST: CategoryController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, [Bind("Id,Title,Description,ThumbnailImagePath")] Category category)
+        public async Task<ActionResult> Edit(int id, CategoryViewModel model)
         {
-            if (id != category.Id)
+            if(id != model.Id)
             {
-                return NotFound();
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
             }
-            if(ModelState.IsValid)
+
+            if ((await _categoryService.CategoryExists(model.Id)) == false)
             {
-                try {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
-                } catch (DbUpdateConcurrencyException) {
-                    if(!CategoryExists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));   
+                ModelState.AddModelError("", "Category does not exist!");
+                return View(model);
             }
-            return View(category);
+            //if (id != category.Id)
+            //{
+            //    return NotFound();
+            //}
+            //if(ModelState.IsValid)
+            //{
+            //    try {
+            //        _context.Update(category);
+            //        await _context.SaveChangesAsync();
+            //    } catch (DbUpdateConcurrencyException) {
+            //        if(!CategoryExists(category.Id))
+            //        {
+            //            return NotFound();
+            //        }
+            //        else
+            //        {
+            //            throw;
+            //        }
+            //    }
+            //    return RedirectToAction(nameof(Index));   
+            //}
+            //return View(category);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _categoryService.Edit(model.Id, model);
+
+            return RedirectToAction(nameof(Details), new { model.Id });
         }
 
         // GET: CategoryController/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        [HttpGet]
+        public async Task<ActionResult> Delete(int id)
         {
-            if (id == null)
+            if ((await _categoryService.CategoryExists(id)) == false)
             {
                 return NotFound();
             }
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(c => c.Id == id);
-            if(category==null)
+
+            var category = await _categoryService.CategoryDetailsById(id);
+            var model = new CategoryViewModel()
             {
-                return NotFound();
-            }
-            return View(category);
+                Id = category.Id,
+                ThumbnailImagePath = category.ThumbnailImagePath,
+                Title = category.Title,
+                Description = category.Description
+            };
+
+            return View(model);
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+            //var category = await _context.Categories
+            //    .FirstOrDefaultAsync(c => c.Id == id);
+            //if(category==null)
+            //{
+            //    return NotFound();
+            //}
+            //return View(category);
         }
 
         // POST: CategoryController/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(int id, CategoryViewModel model)
         {
-            var category = await _context.Categories.FindAsync(id);
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            if ((await _categoryService.CategoryExists(id)) == false)
+            {
+                return NotFound();
+            }
+            if (id != model.Id)
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
 
+            await _categoryService.Delete(id);
+            //var category = await _context.Categories.FindAsync(id);
+            //_context.Categories.Remove(category);
+            //await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
-        {
-            return _context.Categories.Any(x => x.Id == id);
-        }
+        //private bool CategoryExists(int id)
+        //{
+        //    return _context.Categories.Any(x => x.Id == id);
+        //}
     }
 }

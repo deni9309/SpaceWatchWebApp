@@ -20,7 +20,7 @@ namespace SpaceWatch.Core.Models
 		public int CategoryId { get; set; }
 
 		[Required]
-		public CategoryViewModel Category { get; set; }
+		public CategoryViewModel Category { get; set; } = null!;
 
 		[Required(ErrorMessage = "Please select an item from the '{0}' dropdown list.")]
 		[Display(Name = "Media Kind")]

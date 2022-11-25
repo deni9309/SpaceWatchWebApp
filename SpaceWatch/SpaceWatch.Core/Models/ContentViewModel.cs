@@ -12,13 +12,17 @@ namespace SpaceWatch.Core.Models
 
 		[StringLength(200, MinimumLength = 2)]
 		[Required]
-		public string Title { get; set; }
+		public string Title { get; set; } = null!;
 
 		[Display(Name = "HTML/Text Content")]
 		public string? HtmlContent { get; set; }
 
 		[Display(Name = "Video Link")]
 		public string? VideoLink { get; set; }
+
+		public int CategoryId { get; set; }
+
+		public string CategoryName { get; set; } = null!;
 
 		public int CatItemId { get; set; }
 
@@ -27,7 +31,5 @@ namespace SpaceWatch.Core.Models
 
 		[Display(Name = "Comments")]
 		public IEnumerable<UserComment> UserComments { get; set; }
-
-		public int CategoryId { get; set; }
 	}
 }
