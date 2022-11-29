@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Routing;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using SpaceWatch.Core.Contracts;
 using SpaceWatch.Core.Models;
 using SpaceWatch.Infrastructure.Common;
 using SpaceWatch.Infrastructure.Data.Entities;
+using SpaceWatch.Infrastructure.Data.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,10 +52,24 @@ namespace SpaceWatch.Core.Services
 				{
 					Id = m.Id,
 					ThumbnailImagePath = m.ThumbnailImagePath,
-					Title = m.Title,
+					Title = m.Title
 				})
 				.ToListAsync();
 		}
+
+        public async Task<IEnumerable<SelectListItem>> GetMediaTypesForSelectList()
+        {
+          var mediaTypes=  await _repo.AllReadonly<MediaType>()
+                 .Where(m => m.IsActive)
+                 .Select(m => new MediaTypeSelectListModel()
+                 {
+                     Id = m.Id,
+                     Title = m.Title
+                 })
+                 .ToListAsync();
+
+			return mediaTypes.ConvertToSelectList(0);
+        }
 
         public async Task Delete(int mediaTypeId)
         {
@@ -83,5 +99,7 @@ namespace SpaceWatch.Core.Services
             return await _repo.AllReadonly<MediaType>()
                .AnyAsync(m => m.Id == mediaTypeId && m.IsActive);
         }
+
+      
     }
 }

@@ -1,4 +1,4 @@
-﻿@model CategoryItem
+﻿@model CategoryItemAddViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -7,7 +7,10 @@
 <div class="section">
     <h3 class="section-header">Edit Media Item</h3>
     <hr class="section-divider" />
-    <h5>Category/Genre:<strong class="text-black-50">@ViewBag.CategoryTitle</strong></h5>
+    <h5>From category <strong class="text-black-50">@TempData["CategoryTitle"]</strong></h5>
+    @{
+        TempData.Keep("CategoryTitle");
+    }
     <hr class="section-divider" />
     <div class="row mt-3">
         <div class="col-md-6">

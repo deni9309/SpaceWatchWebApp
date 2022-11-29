@@ -42,6 +42,7 @@ namespace SpaceWatch
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IMediaTypeService, MediaTypeService>();
 			services.AddScoped<ICategoryService, CategoryService>();
+			services.AddScoped<ICategoryItemService, CategoryItemService>();
 			services.AddScoped<IContentService, ContentService>();
 			services.AddScoped<IDataFunctions, DataFunctions>();
 

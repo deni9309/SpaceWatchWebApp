@@ -10,13 +10,16 @@ using System.Threading.Tasks;
 namespace SpaceWatch.Infrastructure.Data.Entities
 {
     public class CategoryItem
-    {    
-        [Key]
+    {
+		[NotMapped]
+		private DateTime _releaseDate = DateTime.MinValue;
+
+		[Key]
         public int Id { get; set; }
 
         [StringLength(200, MinimumLength = 2)]
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
 
         public string? Description { get; set; }
 
@@ -24,7 +27,7 @@ namespace SpaceWatch.Infrastructure.Data.Entities
         public int CategoryId { get; set; }
 
         [Required]
-        public Category Category { get; set; }
+        public Category Category { get; set; } = null!;
 
         [Required(ErrorMessage = "Please select a valid item from the '{0}' dropdown list.")]
         [Display(Name = "Media Kind")]
@@ -45,9 +48,6 @@ namespace SpaceWatch.Infrastructure.Data.Entities
 
         [NotMapped]
         public int ContentId { get; set; }
-        [NotMapped]
-
-        private DateTime _releaseDate = DateTime.MinValue;
 
         [Required]
         [DefaultValue(true)]

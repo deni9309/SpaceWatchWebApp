@@ -1,74 +1,73 @@
-﻿@model IEnumerable<CategoryItem>
+﻿@model IEnumerable<CategoryItemViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 <div class="section">
-    <h3 class="section-header text-orange">All Media Items</h3>
-    <h5 class="text-black-50">Category: <strong>@ViewBag.CategoryTitle</strong></h5>
-    <hr class="section-divider" />
-    <p>
-        <partial name="_CreateButtonPartial" model="@ViewBag.CategoryId" />
+	<h3 class="section-header text-orange">All Media Items</h3>
+	<h5 class="text-black-50">From category <strong>@ViewBag.CategoryTitle</strong></h5>
+	<hr class="section-divider" />
+	<div class="col-md-10 offset-lg-1">
+		<p>
+			<partial name="_CreateButtonPartial" model="@ViewBag.CategoryId" />
+			<a class="btn btn-outline-dark" asp-controller="Category" asp-action="Index"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to all Categories</a>
+			@*asp-route-categoryId="@ViewBag.CategoryId"*@
+		</p>
 
-        <a class="btn btn-outline-dark" asp-controller="Category" asp-action="Index"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to all Categories</a>
-        @*asp-route-categoryId="@ViewBag.CategoryId"*@
-    </p>
-    <div class="col-md-12">
-        <table class="table" style="width:fit-content">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Title)
-                    </th>
-                    <th class="col-md-4">
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th class="col-md-3">
-                        @Html.DisplayNameFor(model => model.DateTimeItemReleased)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td style="vertical-align:middle">
-                           @item.Title
-                        </td>
-                        <td style="vertical-align:middle" class="col-md-4">
-                           @item.Description
-                        </td>
-                        <td style="vertical-align:middle" class="col-md-3">
-                            <div class="card p-1">
-                               @item.DateTimeItemReleased
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle">
-                            <div class="btn-group-vertical flex-column">
-                                <partial name="_RUDButtonsPartial" model="@item.Id" />
+		<table class="table">
+			<thead>
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.Title)
+					</th>
+					<th style="width:contain">
+						@Html.DisplayNameFor(model => model.Description)
+					</th>
+					<th style="width:contain">
+						@Html.DisplayNameFor(model => model.DateTimeItemReleased)
+					</th>
+					<th style="width:contain"></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td style="vertical-align:middle">
+							@item.Title
+						</td>
+						<td style="vertical-align:middle; width:contain">
+							@item.Description
+						</td>
+						<td style="vertical-align:middle">
+							<div class="card p-1" style=" width:contain">
+								@item.DateTimeItemReleased
+							</div>
+						</td>
+						<td style="vertical-align:middle">
+							<div class="btn-group-vertical" style="width:contain">
+								<partial name="_RUDButtonsPartial" model="@item.Id" />
 
-                                @if (item.ContentId == 0)
-                                {
-                                    <a asp-controller="Content" asp-action="Create"
-                                       asp-route-categoryItemId="@item.Id" asp-route-categoryId="@item.CategoryId" class="btn btn-outline-success"><i class="fa-solid fa-square-plus mr-2 ml-2"></i>Add Content</a>
-                                }
-                                else
-                                {
-                                    <a asp-controller="Content" asp-action="Edit"
-                                       asp-route-categoryItemId="@item.Id" asp-route-categoryId="@item.CategoryId" class="btn btn-outline-warning"><i class="fa-solid fa-pen-to-square mr-2 ml-2"></i>Edit Content</a>
-                                }
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <p>
-        <partial name="_CreateButtonPartial" model="@ViewBag.CategoryId" />
-
-        <a class="btn btn-outline-dark" asp-controller="Category" asp-action="Index"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to all Categories</a>
-        @*asp-route-categoryId="@ViewBag.CategoryId"*@
-    </p>
+								@if (item.ContentId == 0)
+								{
+									<a asp-controller="Content" asp-action="Create"
+							   asp-route-categoryItemId="@item.Id" asp-route-categoryId="@item.CategoryId" class="btn btn-outline-success"><i class="fa-solid fa-square-plus mr-2 ml-2"></i>Add Content</a>
+								}
+								else
+								{
+									<a asp-controller="Content" asp-action="Edit"
+							   asp-route-categoryItemId="@item.Id" asp-route-categoryId="@item.CategoryId" class="btn btn-outline-warning"><i class="fa-solid fa-pen-to-square mr-2 ml-2"></i>Edit Content</a>
+								}
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		<p>
+			<partial name="_CreateButtonPartial" model="@ViewBag.CategoryId" />
+			<a class="btn btn-outline-dark" asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to all Categories</a>
+			@*asp-route-categoryId="@ViewBag.CategoryId"*@
+		</p>
+	</div>
 </div>

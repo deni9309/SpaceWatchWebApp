@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SpaceWatch.Core.Contracts;
+using SpaceWatch.Core.Models;
 using SpaceWatch.Infrastructure.Data;
 using SpaceWatch.Infrastructure.Data.Entities;
 using SpaceWatch.Infrastructure.Data.Extensions;
@@ -15,177 +17,287 @@ namespace SpaceWatch.Areas.Admin.Controllers
     public class CategoryItemController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICategoryItemService _categoryItemService;
+        private readonly ICategoryService _categoryService;
+		private readonly IMediaTypeService _mediaTypeService;
 
-        public CategoryItemController(ApplicationDbContext context)
+
+		public CategoryItemController(ApplicationDbContext context, 
+            ICategoryItemService categoryItemService, 
+            ICategoryService categoryService,
+            IMediaTypeService mediaTypeService)
         {
             _context = context;
+            _categoryItemService = categoryItemService;
+            _categoryService = categoryService;
+            _mediaTypeService = mediaTypeService;
         }
 
         // GET: Admin/CategoryItem
         public async Task<IActionResult> Index(int categoryId)
         {
-            List<CategoryItem> list = await (from catItem in _context.CategoryItems
-                                             join contentItem in _context.Content
-                                             on catItem.Id equals contentItem.CategoryItem.Id
-                                             into gj
-                                             from subContent in gj.DefaultIfEmpty()
+            //List<CategoryItem> list = await (from catItem in _context.CategoryItems
+            //                                 join contentItem in _context.Content
+            //                                 on catItem.Id equals contentItem.CategoryItem.Id
+            //                                 into gj
+            //                                 from subContent in gj.DefaultIfEmpty()
 
-                                             where catItem.CategoryId == categoryId
-                                             select new CategoryItem
-                                             {
-                                                 Id = catItem.Id,
-                                                 Title = catItem.Title,
-                                                 Description = catItem.Description,
-                                                 DateTimeItemReleased = catItem.DateTimeItemReleased,
-                                                 MediaTypeId = catItem.MediaTypeId,
-                                                 CategoryId = categoryId,
-                                                 ContentId = (subContent != null) ? subContent.Id : 0
-                                             }).ToListAsync();
+            //                                 where catItem.CategoryId == categoryId
+            //                                 select new CategoryItem
+            //                                 {
+            //                                     Id = catItem.Id,
+            //                                     Title = catItem.Title,
+            //                                     Description = catItem.Description,
+            //                                     DateTimeItemReleased = catItem.DateTimeItemReleased,
+            //                                     MediaTypeId = catItem.MediaTypeId,
+            //                                     CategoryId = categoryId,
+            //                                     ContentId = (subContent != null) ? subContent.Id : 0
+            //                                 }).ToListAsync();
+            var model = await _categoryItemService.GetAllCategoryItemsFromCategory(categoryId);
 
             ViewBag.CategoryId = categoryId;
-
-            ViewBag.CategoryTitle = _context.Categories
-                .FirstOrDefaultAsync(c => c.Id == categoryId).Result.Title;
-
-            return View(list);
+			ViewBag.CategoryTitle = await _categoryService.GetCategoryTitleById(categoryId);
+	
+			return View(model);
         }
 
         // GET: Admin/CategoryItem/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
+            if ((await _categoryItemService.CategoryItemExists(id)) == false)
             {
                 return NotFound();
             }
 
-            var categoryItem = await _context.CategoryItems
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var model = await _categoryItemService.CategoryItemDetailsById(id);
 
-            if (categoryItem == null)
+            if (model == null)
             {
                 return NotFound();
             }
 
-            var catId = categoryItem.CategoryId;
-            ViewBag.CategoryTitle = _context.Categories.FirstOrDefault(c => c.Id == catId).Title;
+			TempData["CategoryTitle"] = await _categoryItemService.GetCategoryTitleByCatItemId(id);
+            return View(model);
+			//if (id == null)
+			//{
+			//    return NotFound();
+			//}
 
-            return View(categoryItem);
-        }
+			//var categoryItem = await _context.CategoryItems
+			//    .FirstOrDefaultAsync(m => m.Id == id);
 
-        // GET: Admin/CategoryItem/Create
+			//if (categoryItem == null)
+			//{
+			//    return NotFound();
+			//}
+			//return View(categoryItem);
+		}
+
+		// GET: Admin/CategoryItem/Create
+		[HttpGet]
         public async Task<IActionResult> Create(int categoryId)
         {
-            List<MediaType> mediaTypes = await _context.MediaTypes.ToListAsync();
-
-            CategoryItem categoryItem = new CategoryItem
+            var model = new CategoryItemAddViewModel()
             {
                 CategoryId = categoryId,
-                MediaTypes = mediaTypes.ConvertToSelectList(0)
+                MediaTypes = await _mediaTypeService.GetMediaTypesForSelectList()
             };
 
-            ViewBag.CategoryTitle = _context.Categories
-               .FirstOrDefaultAsync(c => c.Id == categoryId).Result.Title;
+            TempData["CategoryId"] = categoryId;
+            TempData["CategoryTitle"] = await _categoryService.GetCategoryTitleById(categoryId);
 
-            return View(categoryItem);
-        }
+            return View(model);
+			//List<MediaType> mediaTypes = await _context.MediaTypes.ToListAsync();
 
-        // POST: Admin/CategoryItem/Create       
+			//CategoryItem categoryItem = new CategoryItem
+			//{
+			//    CategoryId = categoryId,
+			//    MediaTypes = mediaTypes.ConvertToSelectList(0)
+			//};
+
+			//ViewBag.CategoryTitle = _context.Categories
+			//   .FirstOrDefaultAsync(c => c.Id == categoryId).Result.Title;
+
+			//return View(categoryItem);
+		}
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(
-            [Bind("Id,Title,Description,CategoryId,MediaTypeId,DateTimeItemReleased")] CategoryItem categoryItem)
+		//[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create(CategoryItemAddViewModel model)
         {
-            if (ModelState.IsValid)
+			if (!ModelState.IsValid)
             {
-                _context.Add(categoryItem);
-                await _context.SaveChangesAsync();
+                model.MediaTypes = await _mediaTypeService.GetMediaTypesForSelectList();
+                TempData["CategoryTitle"] = await _categoryService.GetCategoryTitleById(model.CategoryId);
+				return View(model);
+			}
 
-                return RedirectToAction(nameof(Index), new { categoryId = categoryItem.CategoryId });
-              
-            }
-            List<MediaType> mediaTypes = await _context.MediaTypes.ToListAsync();
-            categoryItem.MediaTypes = mediaTypes.ConvertToSelectList(categoryItem.MediaTypeId);
+            int id = await _categoryItemService.Add(model);
+			
+			return RedirectToAction(nameof(Index), new { categoryId = model.CategoryId });
+		}
+        // POST: Admin/CategoryItem/Create       
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(
+        //    [Bind("Id,Title,Description,CategoryId,MediaTypeId,DateTimeItemReleased")] CategoryItem categoryItem)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(categoryItem);
+        //        await _context.SaveChangesAsync();
 
-            return View(categoryItem);
-        }
+        //        return RedirectToAction(nameof(Index), new { categoryId = categoryItem.CategoryId });
+
+        //    }
+        //    List<MediaType> mediaTypes = await _context.MediaTypes.ToListAsync();
+        //    categoryItem.MediaTypes = mediaTypes.ConvertToSelectList(categoryItem.MediaTypeId);
+
+        //    return View(categoryItem);
+        //}
 
         // GET: Admin/CategoryItem/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+
+        [HttpGet]
+		public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
+            if ((await _categoryItemService.CategoryItemExists(id)) == false)
             {
                 return NotFound();
             }
-            List<MediaType> mediaTypes = await _context.MediaTypes.ToListAsync();
 
-            var categoryItem = await _context.CategoryItems.FindAsync(id);
+            var categoryItem = await _categoryItemService.CategoryItemDetailsById(id);
 
-            if (categoryItem == null)
+            var model = new CategoryItemAddViewModel()
             {
-                return NotFound();
+                Id = categoryItem.Id,
+                Title = categoryItem.Title,
+                DateTimeItemReleased = categoryItem.DateTimeItemReleased,
+                Description = categoryItem.Description,
+                CategoryId = categoryItem.CategoryId,
+                MediaTypeId = categoryItem.MediaTypeId,
+                MediaTypes = await _mediaTypeService.GetMediaTypesForSelectList()
+            };
+
+            TempData["CategoryId"] = model.CategoryId;
+            TempData["CategoryTitle"] = await _categoryService.GetCategoryTitleById(model.CategoryId);
+
+            return View(model);
+            //List<MediaType> mediaTypes = await _context.MediaTypes.ToListAsync();
+
+            //var categoryItem = await _context.CategoryItems.FindAsync(id);
+
+            //if (categoryItem == null)
+            //{
+            //    return NotFound();
+            //}
+            //categoryItem.MediaTypes = mediaTypes.ConvertToSelectList(categoryItem.MediaTypeId);
+
+            //var catId = categoryItem.CategoryId;
+            //ViewBag.CategoryTitle = _context.Categories.FirstOrDefault(c => c.Id == catId).Title;
+
+            //return View(categoryItem);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, CategoryItemAddViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return RedirectToAction(nameof(Index), new { id = model.CategoryId });
             }
-            categoryItem.MediaTypes = mediaTypes.ConvertToSelectList(categoryItem.MediaTypeId);
 
-            var catId = categoryItem.CategoryId;
-            ViewBag.CategoryTitle = _context.Categories.FirstOrDefault(c => c.Id == catId).Title;
+            if ((await _categoryItemService.CategoryItemExists(model.Id.Value)) == false)
+            {
+                model.MediaTypes = await _mediaTypeService.GetMediaTypesForSelectList();
+                ModelState.AddModelError("", "Category Item does not exists!");
+                TempData["CategoryTitle"] = await _categoryService.GetCategoryTitleById(model.CategoryId);
+                return View(model);
+            }
 
-            return View(categoryItem);
+            if (!ModelState.IsValid)
+            {
+                model.MediaTypes = await _mediaTypeService.GetMediaTypesForSelectList();
+                TempData["CategoryTitle"] = await _categoryService.GetCategoryTitleById(model.CategoryId);
+                return View(model);
+            }
+
+            int itemId = await _categoryItemService.Edit(model.Id.Value, model);
+
+            return RedirectToAction(nameof(Details), new { id = itemId });
         }
 
         // POST: Admin/CategoryItem/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, 
-            [Bind("Id,Title,Description,CategoryId,MediaTypeId,DateTimeItemReleased")] CategoryItem categoryItem)
-        {
-            if (id != categoryItem.Id)
-            {
-                return NotFound();
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, 
+        //    [Bind("Id,Title,Description,CategoryId,MediaTypeId,DateTimeItemReleased")] CategoryItem categoryItem)
+        //{
+        //    if (id != categoryItem.Id)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(categoryItem);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CategoryItemExists(categoryItem.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index), new { categoryId = categoryItem.CategoryId });
-            }
-            return View(categoryItem);
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(categoryItem);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!CategoryItemExists(categoryItem.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index), new { categoryId = categoryItem.CategoryId });
+        //    }
+        //    return View(categoryItem);
+        //}
 
         // GET: Admin/CategoryItem/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
+            if ((await _categoryItemService.CategoryItemExists(id)) == false)
             {
                 return NotFound();
             }
 
-            var categoryItem = await _context.CategoryItems
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (categoryItem == null)
+            var categoryItem = await _categoryItemService.CategoryItemDetailsById(id);
+            var model = new CategoryItemViewModel()
             {
-                return NotFound();
-            }
+                CategoryId = categoryItem.CategoryId,
+                MediaTypeId = categoryItem.MediaTypeId,
+                Id = categoryItem.Id,
+                Title = categoryItem.Title,
+                Description = categoryItem.Description,
+                DateTimeItemReleased = categoryItem.DateTimeItemReleased
+            };
 
-            var catId = categoryItem.CategoryId;
-            ViewBag.CategoryTitle = _context.Categories.FirstOrDefault(c => c.Id == catId).Title;
+            TempData["CategoryTitle"] = await _categoryService.GetCategoryTitleById(model.CategoryId);
 
-            return View(categoryItem);
+            return View(model);
+            //var categoryItem = await _context.CategoryItems
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+
+            //if (categoryItem == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var catId = categoryItem.CategoryId;
+            //ViewBag.CategoryTitle = _context.Categories.FirstOrDefault(c => c.Id == catId).Title;
+
+            //return View(categoryItem);
         }
 
         // POST: Admin/CategoryItem/Delete/5

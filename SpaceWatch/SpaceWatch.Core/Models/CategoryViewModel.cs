@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SpaceWatch.Infrastructure.Data.Extensions.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SpaceWatch.Core.Models
 {
-    public class CategoryViewModel
+    public class CategoryViewModel : IPrimaryProperties
     {
 		public int Id { get; set; }
 

@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using SpaceWatch.Infrastructure.Data.Extensions.Interfaces;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SpaceWatch.Core.Models
 {
-	public class MediaTypeViewModel
+	public class MediaTypeViewModel : IPrimaryProperties
 	{
 		public int Id { get; set; }
 

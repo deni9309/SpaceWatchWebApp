@@ -6,6 +6,13 @@ namespace SpaceWatch.Infrastructure.Data.Extensions
     {
 		public static List<SelectListItem> ConvertToSelectList<T>(this IEnumerable<T> collection, int selectedValue) where T : IPrimaryProperties
 		{
+			//return collection.Select(c => new SelectListItem()
+			//{
+			//	Text = c.Title,
+			//	Value = c.Id.ToString(),
+			//	Selected = (c.Id == selectedValue)
+			//})
+			//	.ToList();
 			return (from item in collection
 					select new SelectListItem
 					{

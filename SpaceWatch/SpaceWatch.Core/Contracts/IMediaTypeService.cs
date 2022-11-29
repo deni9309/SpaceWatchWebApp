@@ -1,4 +1,5 @@
-﻿using SpaceWatch.Core.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SpaceWatch.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,8 @@ namespace SpaceWatch.Core.Contracts
 	public interface IMediaTypeService
 	{
 		Task<IEnumerable<MediaTypeViewModel>> GetAll();
-		Task Add(MediaTypeViewModel model);
+        Task<IEnumerable<SelectListItem>> GetMediaTypesForSelectList();
+        Task Add(MediaTypeViewModel model);
 
         Task<bool> MediaTypeExists(int mediaTypeId);
 

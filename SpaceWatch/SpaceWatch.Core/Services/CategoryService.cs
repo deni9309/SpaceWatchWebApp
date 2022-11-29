@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SpaceWatch.Core.Contracts;
 using SpaceWatch.Core.Models;
 using SpaceWatch.Infrastructure.Common;
@@ -51,6 +52,13 @@ namespace SpaceWatch.Core.Services
 		{
 			return await _repo.AllReadonly<Category>()
 				.AnyAsync(c=> c.Id == categoryId && c.IsActive);
+		}
+
+		public async Task<string> GetCategoryTitleById(int categoryId)
+		{
+			return await _repo.AllReadonly<Category>()
+				.Where(c => c.Id == categoryId)
+				.Select(c => c.Title).FirstOrDefaultAsync();		
 		}
 
 		public async Task Delete(int categoryId)

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SpaceWatch.Areas.Admin.Models;
+using SpaceWatch.Infrastructure.Common;
 using SpaceWatch.Infrastructure.Data;
 using SpaceWatch.Infrastructure.Data.Entities;
 using System;
@@ -17,10 +18,14 @@ namespace SpaceWatch.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IDataFunctions _dataFunctions;
-        public UsersToCategoryController(ApplicationDbContext context, IDataFunctions dataFunctions)
+        private readonly IRepository _repo;
+        public UsersToCategoryController(ApplicationDbContext context, 
+            IDataFunctions dataFunctions,
+            IRepository repository)
         {
             _context = context;
             _dataFunctions = dataFunctions;
+            _repo = repository;
         }
 
         [HttpGet]

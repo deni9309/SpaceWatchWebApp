@@ -7,17 +7,19 @@
 <div class="section">
 	<h3 class="section-header text-orange">All Categories</h3>
 	<hr class="section-divider" />
+	<div class="col-md-10 offset-lg-1">
 	<p>
 		<partial name="_CreateButtonPartial" model="0" />
 	</p>
-	<div class="col-md-12">
-		<table class="table" style="width:fit-content">
+	
+	
+		<table class="table">
 			<thead>
 				<tr>
 					<th>
 						@Html.DisplayNameFor(model => model.Title)
 					</th>
-					<th class="col-md-4">
+					<th>
 						@Html.DisplayNameFor(model => model.Description)
 					</th>
 					<th>
@@ -33,7 +35,7 @@
 						<td style="vertical-align:middle">
 							@item.Title
 						</td>
-						<td style="vertical-align:middle" class="col-md-4">
+						<td style="vertical-align:middle">
 							@item.Description
 						</td>
 						<td style="vertical-align:middle">
@@ -42,7 +44,7 @@
 							</div>
 						</td>
 						<td style="vertical-align:middle">
-							<div class="btn-group-vertical flex-column">
+							<div class="btn-group-vertical" style="width:8em">
 								<partial name="_RUDButtonsPartial" model="@item.Id" />
 								<a asp-area="Admin" asp-controller="CategoryItem" asp-action="Index" asp-route-categoryId="@item.Id"
 							   class="btn btn-outline-orchid">Update Items</a>
@@ -52,5 +54,5 @@
 				}
 			</tbody>
 		</table>
+		</div>
 	</div>
-</div>

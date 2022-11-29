@@ -7,17 +7,17 @@
 <div class="section">
 	<h3 class="section-header text-orange">All Media Types</h3>
 	<hr class="section-divider" />
+	<div class="col-md-10 offset-lg-1">
 	<p>
 		<partial name="_CreateButtonPartial" model="0" />
 	</p>
-	<div class="col-md-12">
-		<table class="table" style="width:contain">
+		<table class="table">
 			<thead>
 				<tr>
 					<th>
 						@Html.DisplayNameFor(model => model.Title)
 					</th>
-					<th class="col-md-4">
+					<th>
 						@Html.DisplayNameFor(model => model.ThumbnailImagePath)
 					</th>
 					<th></th>
@@ -30,13 +30,13 @@
 						<td style="vertical-align:middle">
 							@item.Title
 						</td>
-						<td style="vertical-align:middle" class="col-md-4">
+						<td style="vertical-align:middle">
 							<div class="card p-1">
 								@item.ThumbnailImagePath
 							</div>
 						</td>
 						<td style="vertical-align:middle">
-							<div class="btn-group-vertical flex-column">
+							<div class="btn-group-vertical" style="width:max-content">
 								<partial name="_RUDButtonsPartial" model="@item.Id" />
 							</div>
 						</td>
@@ -45,4 +45,5 @@
 			</tbody>
 		</table>
 	</div>
-</div>
+	</div>
+

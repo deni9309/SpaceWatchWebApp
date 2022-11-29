@@ -15,7 +15,7 @@ namespace SpaceWatch.Core.Contracts
 
 		Task<bool> CategoryExists(int categoryId);
 
-
+		Task<string> GetCategoryTitleById(int categoryId);
 		//Task<string> GetCatItemNameAsync(int contentId);
 
 		Task<CategoryViewModel> CategoryDetailsById(int id);
