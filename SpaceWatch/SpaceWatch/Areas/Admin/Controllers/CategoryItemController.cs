@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SpaceWatch.Core.Contracts;
 using SpaceWatch.Core.Models;
-using SpaceWatch.Infrastructure.Data;
-using SpaceWatch.Infrastructure.Data.Entities;
-using SpaceWatch.Infrastructure.Data.Extensions;
+using SpaceWatch.Extensions;
 
 namespace SpaceWatch.Areas.Admin.Controllers
 {
@@ -16,21 +12,21 @@ namespace SpaceWatch.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class CategoryItemController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
         private readonly ICategoryItemService _categoryItemService;
         private readonly ICategoryService _categoryService;
 		private readonly IMediaTypeService _mediaTypeService;
+        private readonly ILogger<CategoryItemController> _logger;
 
-
-		public CategoryItemController(ApplicationDbContext context, 
-            ICategoryItemService categoryItemService, 
+        public CategoryItemController(ICategoryItemService categoryItemService, 
             ICategoryService categoryService,
-            IMediaTypeService mediaTypeService)
-        {
-            _context = context;
+            IMediaTypeService mediaTypeService,
+            ILogger<CategoryItemController> logger)
+        {            
             _categoryItemService = categoryItemService;
             _categoryService = categoryService;
             _mediaTypeService = mediaTypeService;
+            _logger = logger;
         }
 
         // GET: Admin/CategoryItem
@@ -301,22 +297,36 @@ namespace SpaceWatch.Areas.Admin.Controllers
         }
 
         // POST: Admin/CategoryItem/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost, ActionName("Delete")] //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id, CategoryItemViewModel model)
         {
-            var categoryItem = await _context.CategoryItems
-                .FindAsync(id);
+            if(id != model.Id)
+            {
+                _logger.LogInformation("User with id {0} attempts to access category item he has no rights over.", User.GetLoggedInUserId<string>());
+                return NotFound();
+            }
 
-            _context.CategoryItems.Remove(categoryItem);
-            await _context.SaveChangesAsync();
+            if ((await _categoryItemService.CategoryItemExists(id)) == false)
+            {
+                return NotFound();
+            }
 
-            return RedirectToAction(nameof(Index), new { categoryId = categoryItem.CategoryId });
+            await _categoryItemService.Delete(id);
+
+            return RedirectToAction(nameof(Index), new { id = model.CategoryId });
+
+            //var categoryItem = await _context.CategoryItems
+            //    .FindAsync(id);
+
+            //_context.CategoryItems.Remove(categoryItem);
+            //await _context.SaveChangesAsync();
+
+            //return RedirectToAction(nameof(Index), new { categoryId = categoryItem.CategoryId });
         }
 
-        private bool CategoryItemExists(int id)
-        {
-            return _context.CategoryItems.Any(e => e.Id == id);
-        }
+        //private bool CategoryItemExists(int id)
+        //{
+        //    return _context.CategoryItems.Any(e => e.Id == id);
+        //}
     }
 }

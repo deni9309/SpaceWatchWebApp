@@ -74,9 +74,47 @@ namespace SpaceWatch.Core.Services
 			   .AnyAsync(c => c.Id == categoryItemId && c.IsActive);
 		}
 
-		public Task Delete(int categoryItemId)
+		public async Task Delete(int categoryItemId)
 		{
-			throw new NotImplementedException();
+			var categoryItem = await _repo.GetByIdAsync<CategoryItem>(categoryItemId);
+
+			try
+			{
+				if(categoryItem != null)
+				{
+					await DeleteReletedContent(categoryItemId);
+
+					categoryItem.IsActive = false;
+					
+					await _repo.SaveChangesAsync();
+				}
+			}
+			catch (ArgumentNullException ex)
+			{
+				_logger.LogError(nameof(Delete), ex);
+				throw new ArgumentNullException(nameof(categoryItemId));
+			}
+		
+		}
+
+		/// <summary>
+		/// Executes only if releted content exists.
+		/// Sets IsActive property to false on content item when its principal entity is set to so.
+		/// </summary>
+		/// <param name="categoryItemId"></param>
+		/// <returns></returns>
+		private async Task DeleteReletedContent(int categoryItemId)
+		{
+			if (await _repo.AllReadonly<Content>().AnyAsync(c => c.CatItemId == categoryItemId)) 
+			{
+                var content = await _repo.All<Content>()
+                .Where(c => c.CatItemId == categoryItemId)
+                .FirstAsync();
+
+				content.IsActive = false;
+
+				await _repo.SaveChangesAsync();
+            }
 		}
 
 		public async Task<int> Edit(int categoryItemId, CategoryItemAddViewModel model)

@@ -21,7 +21,8 @@ namespace SpaceWatch.Controllers
         {
 
             Content content = await (from item in _context.Content
-                                     where item.CategoryItem.Id == categoryItemId
+                                     where item.CategoryItem.Id == categoryItemId 
+                                     where item.IsActive == true
                                      select new Content
                                      {
                                          Title = item.Title,

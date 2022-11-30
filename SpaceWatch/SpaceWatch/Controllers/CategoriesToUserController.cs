@@ -61,6 +61,8 @@ namespace SpaceWatch.Controllers
                                                    on category.Id equals categoryItem.CategoryId
                                                    join content in _context.Content
                                                    on categoryItem.Id equals content.CategoryItem.Id
+                                                   where categoryItem.IsActive== true
+                                                   where content.IsActive == true
                                                    select new Category
                                                    {
                                                        Id = category.Id,
@@ -74,7 +76,13 @@ namespace SpaceWatch.Controllers
         private async Task<List<Category>> GetCategoriesCurrentlySavedForUser(string userId)
         {
             var categoriesCurrentlySavedForUser = await (from userCategory in _context.UserCategories
+                                                         join cat in _context.Categories
+                                                         on userCategory.CategoryId equals cat.Id
+                                                         join catItem in _context.CategoryItems
+                                                         on cat.Id equals catItem.CategoryId
+                                                         where catItem.IsActive== true
                                                          where userCategory.UserId == userId
+                                                         where userCategory.Category.IsActive == true
                                                          select new Category
                                                          {
                                                              Id = userCategory.CategoryId
