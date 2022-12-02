@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -54,6 +55,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
             ViewBag.CategoryId = categoryId;
 			ViewBag.CategoryTitle = await _categoryService.GetCategoryTitleById(categoryId);
 	
+
 			return View(model);
         }
 
@@ -311,9 +313,16 @@ namespace SpaceWatch.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            int categoryId = model.CategoryId;
+
             await _categoryItemService.Delete(id);
 
-            return RedirectToAction(nameof(Index), new { id = model.CategoryId });
+            if((_categoryItemService.GetAllCategoryItemsFromCategory(model.CategoryId).Result.Any()))
+            {
+                return RedirectToAction(nameof(Index), new { model.CategoryId });
+            }
+
+            return RedirectToAction(nameof(Index), "Category");
 
             //var categoryItem = await _context.CategoryItems
             //    .FindAsync(id);

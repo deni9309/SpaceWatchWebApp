@@ -1,53 +1,166 @@
-﻿using SpaceWatch.Core.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using SpaceWatch.Core.Contracts;
 using SpaceWatch.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SpaceWatch.Infrastructure.Common;
+using SpaceWatch.Infrastructure.Data.Entities;
 
 namespace SpaceWatch.Core.Services
 {
 	public class ContentService : IContentService
 	{
-		public Task Add(ContentViewModel model)
+		private readonly IRepository _repo;
+		private readonly ILogger<ContentService> _logger;
+
+		public ContentService(IRepository repo,
+			ILogger<ContentService> logger)
 		{
-			throw new NotImplementedException();
+			_repo = repo;
+			_logger = logger;
 		}
 
-		public Task<ContentViewModel> ContentDetailsById(int id)
+		public async Task<int> Add(ContentViewModel model)
 		{
-			throw new NotImplementedException();
+			var content = new Content()
+			{
+				Title= model.Title,
+				CatItemId= model.CatItemId,
+				HtmlContent= model.HtmlContent,
+				VideoLink= model.VideoLink,
+				CategoryId= model.CategoryId
+			};
+
+			try 
+			{
+				await _repo.AddAsync(content);
+				await _repo.SaveChangesAsync();
+			}
+			catch(Exception ex) 
+			{
+                _logger.LogError(nameof(Add), ex);
+                throw new ApplicationException("Database failed to save info.", ex);
+            }
+
+			return content.Id;
 		}
 
-		public Task<bool> ContentExists(int ContentId)
+        public async Task<ContentViewModel> ContentDetailsByCategoryItemId(int categoryItemId)
+        {
+			return await _repo.AllReadonly<Content>()
+				 .Where(c => c.IsActive)
+				 .Where(c => c.CatItemId == categoryItemId)
+				 .Select(c=> new ContentViewModel()
+				 {
+					 Id = c.Id,
+					 Title=c.Title,
+					 VideoLink = c.VideoLink,
+					 HtmlContent = c.HtmlContent,
+					 CatItemId = c.CatItemId
+				 })
+				 .FirstAsync();
+        }
+
+        public async Task<ContentViewModel> ContentDetailsById(int id)
 		{
-			throw new NotImplementedException();
+			return await _repo.AllReadonly<Content>()
+					.Where(c => c.IsActive)
+					.Where(c => c.Id == id)
+					.Select(c => new ContentViewModel()
+					{
+						Id = c.Id,	
+						Title = c.Title,
+						VideoLink = c.VideoLink,
+						HtmlContent = c.HtmlContent,
+						CategoryId = GetCategoryForContentAsync(id).Result.Id,
+						CategoryName = GetCategoryForContentAsync(id).Result.Title
+					}).FirstAsync();
 		}
 
-		public Task Delete(int mediaTypeId)
+		public async Task<bool> ContentExists(int ContentId)
 		{
-			throw new NotImplementedException();
+			return await _repo.AllReadonly<Content>()
+				.Where(c => c.IsActive)
+				.Where(c => c.Id == ContentId)
+				.AnyAsync();
 		}
 
-		public Task Edit(int mediaTypeId, MediaTypeViewModel model)
+		public async Task Delete(int id)
 		{
-			throw new NotImplementedException();
+			var content = await _repo.GetByIdAsync<Content>(id);
+
+			content.IsActive = false;
+
+			await _repo.SaveChangesAsync();
 		}
 
-		public Task<IEnumerable<ContentViewModel>> GetAll()
+		public async Task Edit(int id, ContentViewModel model)
 		{
-			throw new NotImplementedException();
+            var content = await _repo.GetByIdAsync<Content>(id);
+
+			content.Title = model.Title;
+			content.VideoLink = model.VideoLink;
+			content.HtmlContent = model.HtmlContent;
+			content.CatItemId = model.CatItemId;
+
+			await _repo.SaveChangesAsync();
+        }
+
+		public async Task<IEnumerable<ContentViewModel>> GetAll()
+		{
+			return await _repo.AllReadonly<Content>()
+				.Where(c => c.IsActive)
+				.Select(c => new ContentViewModel()
+				{
+					Id = c.Id,
+					CatItemId= c.CatItemId,
+					Title = c.Title,
+					VideoLink = c.VideoLink,
+					HtmlContent = c.HtmlContent,
+					CategoryId = GetCategoryForContentAsync(c.Id).Result.Id,
+					CategoryName = GetCategoryForContentAsync(c.Id).Result.Title				
+				})
+				.ToListAsync();
 		}
 
-		public Task<CategoryViewModel> GetCategoryAsync(int contentId)
+		public async Task<CategoryViewModel> GetCategoryForContentAsync(int contentId)
 		{
-			throw new NotImplementedException();
+			Content content;
+			Category category;
+			try
+			{
+				content = await _repo.AllReadonly<Content>()
+					.Where(c => c.IsActive)
+					.FirstAsync(c => c.Id == contentId);
+
+				category = await _repo.AllReadonly<Category>()
+					.Include(c => c.CategoryItems)
+					.Where(c => c.IsActive)
+					.Select(c => c.CategoryItems.FirstOrDefault(i => i.Id == content.CatItemId)).Select(ca => ca.Category)
+					.FirstAsync();			
+			}
+			catch(Exception ex)
+			{
+				_logger.LogError(nameof(GetCategoryForContentAsync), ex);
+				throw new ApplicationException("An error occured while trying to fetch category info for content!");
+			}
+
+			return new CategoryViewModel()
+			{
+				Id = category.Id,
+				ThumbnailImagePath = category.ThumbnailImagePath,
+				Description = category.Description,
+				Title = category.Title
+			};
 		}
 
-		public Task<string> GetCatItemNameAsync(int contentId)
-		{
-			throw new NotImplementedException();
-		}
+		//public async Task<string> GetCatItemNameAsync(int contentId)
+		//{
+		//	return await _repo.AllReadonly<Content>()
+		//		.Include(c => c.CategoryItem)
+		//		.Where(c => c.IsActive)
+		//		.Where(c => c.Id == contentId)
+		//		.Select(c => c.CategoryItem.Title)
+		//		.FirstOrDefaultAsync();
+		//}
 	}
 }

@@ -1,4 +1,4 @@
-﻿@model Content
+﻿@model ContentViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -10,8 +10,8 @@
     <h5 class="text-black-50">Are you sure you want to delete this content?</h5>
     <hr class="section-divider" />
     <div class="col-md-12 p-2">
-        <h5>Category/Genre: <strong class="text-black-50">@ViewBag.CategoryTitle</strong></h5>
-        <h5>Media Item: <strong class="text-black-50">@ViewBag.CategoryItemTitle</strong> </h5>
+        <h5>From category <strong class="text-black-50">@Model.CategoryName</strong></h5>
+        @*<h5>Media Item: <strong class="text-black-50">@ViewBag.CategoryItemTitle</strong> </h5>*@
         <dl class="row mt-3">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Title)
@@ -19,7 +19,6 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Title)
             </dd>
-
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.HtmlContent)
             </dt>
@@ -38,7 +37,8 @@
         <div class="row p-2">
             <form asp-action="Delete">
                 <input type="hidden" asp-for="Id" />
-                <input type="submit" value="Delete" class="btn btn-danger" /> |
+                <input type="submit" onclick="return confirm('This action can not be undone!\nAre you sure you want to proceed?');" value="Delete" class="btn btn-danger" /> | 
+                <a class="btn btn-outline-dark" asp-route-categoryId="@Model.CategoryId" asp-route-categoryItemId="@Model.CatItemId" asp-action="Edit"><i class="fa-solid fa-pen-to-square mr-1 ml-1"></i>Go to Edit Page</a> |             
                 <a class="btn btn-outline-dark" asp-action="Index" asp-controller="CategoryItem" asp-route-categoryId="@Model.CategoryId"><i class="fas fa-angle-double-left mr-1 ml-1"></i>Back to List</a>
             </form>
         </div>

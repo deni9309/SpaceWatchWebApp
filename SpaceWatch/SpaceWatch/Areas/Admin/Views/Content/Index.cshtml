@@ -1,10 +1,12 @@
-﻿@model IEnumerable<Content>
+﻿@model IEnumerable<ContentViewModel>
 
 @{
 	ViewData["Title"] = "Index";
 }
 
-<h2>Available Content</h2>
+<div class="section">
+	<h3 class="section-header">Available Content</h3>
+	<hr class="section-divider" />
 <p>
 	<a class="btn btn-orchid" asp-action="Create">Create a Content</a>
 </p>
@@ -14,7 +16,6 @@
 			<th>
 				@Html.DisplayNameFor(model => model.Title)
 			</th>
-
 			<th>
 				@Html.DisplayNameFor(model => model.HtmlContent)
 			</th>
@@ -46,3 +47,4 @@
 		}
 	</tbody>
 </table>
+</div>

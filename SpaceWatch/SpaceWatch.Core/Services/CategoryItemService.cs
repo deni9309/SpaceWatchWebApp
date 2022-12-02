@@ -103,7 +103,7 @@ namespace SpaceWatch.Core.Services
 		/// </summary>
 		/// <param name="categoryItemId"></param>
 		/// <returns></returns>
-		private async Task DeleteReletedContent(int categoryItemId)
+		public async Task DeleteReletedContent(int categoryItemId)
 		{
 			if (await _repo.AllReadonly<Content>().AnyAsync(c => c.CatItemId == categoryItemId)) 
 			{
@@ -160,7 +160,7 @@ namespace SpaceWatch.Core.Services
 					Title = c.Title,
 					DateTimeItemReleased = c.DateTimeItemReleased,
 					Description = c.Description,
-					ContentId = (_repo.AllReadonly<Content>().Any(co=>co.CatItemId == c.Id) ?
+					ContentId = (_repo.AllReadonly<Content>().Any(co => co.CatItemId == c.Id) ?
 					(_repo.AllReadonly<Content>().First(co => co.CatItemId == c.Id).Id) : 0)
 					//GetContentIdForCategoryItem(c.Id)
 				})
@@ -175,7 +175,7 @@ namespace SpaceWatch.Core.Services
 				.Where(c => c.IsActive)
 				.Include(c => c.Category)
 				.Where(c => c.Id == categoryItemId)
-				.Select(ca => ca.Category.Title).FirstOrDefaultAsync();
+				.Select(ca => ca.Category.Title).FirstAsync();
 
 		}
 

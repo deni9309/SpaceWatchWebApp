@@ -22,6 +22,8 @@ namespace SpaceWatch.Core.Contracts
 
 		Task Edit(int categoryId, CategoryViewModel model);
 
-		Task Delete(int categoryId);
+		Task DeleteReletedCategoryItemsAndContentFromCategory(int categoryId);
+
+        Task Delete(int categoryId);
 	}
 }

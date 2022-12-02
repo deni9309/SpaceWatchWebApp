@@ -12,7 +12,8 @@ namespace SpaceWatch.Infrastructure.Data.Entities
 
         [StringLength(500)]
         [Required]
-        public string CommentBody { get; set; }
+        public string CommentBody { get; set; } = null!;
+
         public DateTime DatePosted { get; set; }
 
         [ForeignKey(nameof(User))]

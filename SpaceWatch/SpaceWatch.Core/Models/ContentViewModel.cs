@@ -8,7 +8,7 @@ namespace SpaceWatch.Core.Models
 {
 	public class ContentViewModel
 	{
-		public int Id { get; set; }
+		public int? Id { get; set; }
 
 		[StringLength(200, MinimumLength = 2)]
 		[Required]
@@ -22,14 +22,14 @@ namespace SpaceWatch.Core.Models
 
 		public int CategoryId { get; set; }
 
-		public string CategoryName { get; set; } = null!;
+		public string? CategoryName { get; set; } = null!;
 
 		public int CatItemId { get; set; }
 
-		[Display(Name = "Media Item")]
-		public CategoryItemViewModel CategoryItem { get; set; }
+		//[Display(Name = "Media Item")]
+		//public CategoryItemViewModel? CategoryItem { get; set; }
 
-		[Display(Name = "Comments")]
-		public IEnumerable<UserComment> UserComments { get; set; }
+		//[Display(Name = "Comments")]
+		//public IEnumerable<UserComment>? UserComments { get; set; }
 	}
 }

@@ -11,13 +11,10 @@ namespace SpaceWatch.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class MediaTypeController : Controller
     {
-
-       // private readonly ApplicationDbContext _context;
         private readonly IMediaTypeService _mediaTypeService;
 
         public MediaTypeController(IMediaTypeService mediaTypeService)
         {
-           // _context = context;
             _mediaTypeService = mediaTypeService;
         }
 
@@ -113,7 +110,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
         {
             if (id != model.Id)
             {
-                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+                return RedirectToPage("/Pages/AccessDenied", new { area = "Identity" });
             }
 
             if ((await _mediaTypeService.MediaTypeExists(model.Id)) == false)
@@ -206,7 +203,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
 
             if (id != model.Id)
             {
-                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+                return RedirectToPage("/Pages/AccessDenied", new { area = "Identity" });
             }
 
             await _mediaTypeService.Delete(id);

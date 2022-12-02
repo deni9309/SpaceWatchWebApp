@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SpaceWatch.Core.Contracts;
 using SpaceWatch.Core.Models;
-using SpaceWatch.Core.Services;
-using SpaceWatch.Infrastructure.Data;
 using System.Threading.Tasks;
 
 namespace SpaceWatch.Areas.Admin.Controllers
@@ -12,7 +10,6 @@ namespace SpaceWatch.Areas.Admin.Controllers
     [Authorize(Roles ="Admin")]
     public class CategoryController : Controller
     {
-       // private readonly ApplicationDbContext _context;
         private readonly ICategoryService _categoryService;
         public CategoryController(ICategoryService categoryService)
         {
@@ -62,8 +59,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
         }
 
         // POST: CategoryController/Create
-        [HttpPost]
-      //  [ValidateAntiForgeryToken]
+        [HttpPost] // [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CategoryViewModel model)
         {
             if(!ModelState.IsValid)
@@ -116,7 +112,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
         {
             if(id != model.Id)
             {
-                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+                return RedirectToPage("/Pages/AccessDenied", new { area = "Identity" });
             }
 
             if ((await _categoryService.CategoryExists(model.Id)) == false)
@@ -199,7 +195,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
             }
             if (id != model.Id)
             {
-                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+                return RedirectToPage("/Pages/AccessDenied", new { area = "Identity" });
             }
 
             await _categoryService.Delete(id);

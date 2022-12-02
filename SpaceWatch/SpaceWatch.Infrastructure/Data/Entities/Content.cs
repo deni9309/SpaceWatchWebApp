@@ -13,7 +13,7 @@ namespace SpaceWatch.Infrastructure.Data.Entities
 
         [StringLength(200, MinimumLength = 2)]
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
 
         [Display(Name = "HTML/Text Content")]
         public string? HtmlContent { get; set; }
@@ -25,10 +25,10 @@ namespace SpaceWatch.Infrastructure.Data.Entities
         public int CatItemId { get; set; }
 
         [Display(Name = "Media Item")]
-        public CategoryItem CategoryItem { get; set; }
+        public CategoryItem CategoryItem { get; set; } = null!;
 
         [Display(Name = "Comments")]
-        public virtual ICollection<UserComment> UserComments { get; set; }
+        public IEnumerable<UserComment>? UserComments { get; set; }
 
         [NotMapped]
         public int CategoryId { get; set; }
