@@ -3,14 +3,6 @@ using System.Security.Claims;
 
 namespace SpaceWatch.Extensions
 {
-    //public static class ClaimsPrincipalExtension
-    //{
-    //    public static string Id(this ClaimsPrincipal user)
-    //    {
-    //        return user.FindFirstValue(ClaimTypes.NameIdentifier);
-    //    }
-    //}
-
     public static class ClaimsPrincipalExtensions
     {
         public static T GetLoggedInUserId<T>(this ClaimsPrincipal principal)

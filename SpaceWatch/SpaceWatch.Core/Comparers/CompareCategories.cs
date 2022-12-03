@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace SpaceWatch.Comparers
+namespace SpaceWatch.Core.Comparers
 {
     public class CompareCategories : IEqualityComparer<Category>
     {
