@@ -47,6 +47,8 @@ namespace SpaceWatch.Core.Services
         public async Task<ContentViewModel> ContentDetailsByCategoryItemId(int categoryItemId)
         {
 			return await _repo.AllReadonly<Content>()
+				.Include(c=>c.CategoryItem)
+				.Include(c=>c.CategoryItem.Category)
 				 .Where(c => c.IsActive)
 				 .Where(c => c.CatItemId == categoryItemId)
 				 .Select(c=> new ContentViewModel()
@@ -55,7 +57,9 @@ namespace SpaceWatch.Core.Services
 					 Title=c.Title,
 					 VideoLink = c.VideoLink,
 					 HtmlContent = c.HtmlContent,
-					 CatItemId = c.CatItemId
+					 CatItemId = c.CatItemId,
+					 CategoryId = c.CategoryItem.Category.Id,
+					 CategoryName = c.CategoryItem.Category.Title
 				 })
 				 .FirstAsync();
         }
@@ -126,6 +130,7 @@ namespace SpaceWatch.Core.Services
 		{
 			Content content;
 			Category category;
+			CategoryViewModel categoryForContent;
 			try
 			{
 				content = await _repo.AllReadonly<Content>()
@@ -136,7 +141,15 @@ namespace SpaceWatch.Core.Services
 					.Include(c => c.CategoryItems)
 					.Where(c => c.IsActive)
 					.Select(c => c.CategoryItems.FirstOrDefault(i => i.Id == content.CatItemId)).Select(ca => ca.Category)
-					.FirstAsync();			
+					.FirstAsync();
+
+				categoryForContent = new CategoryViewModel()
+				{
+					Id = category.Id,
+					ThumbnailImagePath = category.ThumbnailImagePath,
+					Description = category.Description,
+					Title = category.Title
+				};
 			}
 			catch(Exception ex)
 			{
@@ -144,13 +157,9 @@ namespace SpaceWatch.Core.Services
 				throw new ApplicationException("An error occured while trying to fetch category info for content!");
 			}
 
-			return new CategoryViewModel()
-			{
-				Id = category.Id,
-				ThumbnailImagePath = category.ThumbnailImagePath,
-				Description = category.Description,
-				Title = category.Title
-			};
+			
+
+			return categoryForContent;
 		}
 
 		//public async Task<string> GetCatItemNameAsync(int contentId)

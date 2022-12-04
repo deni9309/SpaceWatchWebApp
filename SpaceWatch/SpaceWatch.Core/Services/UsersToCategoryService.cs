@@ -5,11 +5,6 @@ using SpaceWatch.Core.Models;
 using SpaceWatch.Infrastructure.Common;
 using SpaceWatch.Infrastructure.Data;
 using SpaceWatch.Infrastructure.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpaceWatch.Core.Services
 {
@@ -83,7 +78,7 @@ namespace SpaceWatch.Core.Services
 
         public async Task UpdateUsersSubscriptionsForCategory(UserCategoryListModel userCategoryListModel)
         {
-            List<UserCategory> usersSelectedForCategoryToAdd = null;
+            List<UserCategory>? usersSelectedForCategoryToAdd = null;
 
             if (userCategoryListModel.UsersSelected != null)
             {

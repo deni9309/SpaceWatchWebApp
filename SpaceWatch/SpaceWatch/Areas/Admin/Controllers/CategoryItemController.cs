@@ -13,7 +13,6 @@ namespace SpaceWatch.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class CategoryItemController : Controller
     {
-        //private readonly ApplicationDbContext _context;
         private readonly ICategoryItemService _categoryItemService;
         private readonly ICategoryService _categoryService;
 		private readonly IMediaTypeService _mediaTypeService;
@@ -332,10 +331,5 @@ namespace SpaceWatch.Areas.Admin.Controllers
 
             //return RedirectToAction(nameof(Index), new { categoryId = categoryItem.CategoryId });
         }
-
-        //private bool CategoryItemExists(int id)
-        //{
-        //    return _context.CategoryItems.Any(e => e.Id == id);
-        //}
     }
 }

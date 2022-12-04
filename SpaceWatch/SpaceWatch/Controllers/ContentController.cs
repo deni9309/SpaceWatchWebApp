@@ -1,44 +1,46 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SpaceWatch.Core.Contracts;
-using SpaceWatch.Infrastructure.Data;
-using SpaceWatch.Infrastructure.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using SpaceWatch.Core.Contracts.DefaultArea;
 using System.Threading.Tasks;
 
 namespace SpaceWatch.Controllers
 {
+    [Authorize]
     public class ContentController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
         private readonly IContentService _contentService;
-        private readonly ILogger<ContentController> _logger;
+        IContentForUserService _contentForUserService;
 
-        public ContentController(ApplicationDbContext context,
+		private readonly ILogger<ContentController> _logger;
+
+        public ContentController(/*ApplicationDbContext context,*/
             IContentService contentService,
+            IContentForUserService contentForUserService,
             ILogger<ContentController> logger)
         {
-            _context = context;
+            //_context = context;
             _contentService = contentService;
+            _contentForUserService = contentForUserService;
             _logger = logger;
         }
 
         public async Task<IActionResult> Index(int categoryItemId)
         {
+            var model = await _contentForUserService.GetContent(categoryItemId);
+            if (model == null)
+            {
+                _logger.LogInformation(nameof(Index), "User tries to access content that could not be found.");
 
-            Content content = await (from item in _context.Content
-                                     where item.CategoryItem.Id == categoryItemId 
-                                     where item.IsActive == true
-                                     select new Content
-                                     {
-                                         Title = item.Title,
-                                         VideoLink = item.VideoLink,
-                                         HtmlContent = item.HtmlContent
-                                     }).FirstOrDefaultAsync();
-            return View(content);
+                return NotFound();
+            }
+
+            var contentDetails = _contentService.ContentDetailsByCategoryItemId(categoryItemId).Result;
+            TempData["CategoryTitle"] = contentDetails.CategoryName;
+
+            return View(model);
         }
     }
 }

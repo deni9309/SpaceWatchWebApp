@@ -9,9 +9,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
     public class UsersToCategoryController : Controller
-    {
-        //private readonly ApplicationDbContext _context;     
-       
+    {  
         private readonly ICategoryService _categoryService;
         private readonly IUsersToCategoryService _usersToCategoryService;
         public UsersToCategoryController(IUsersToCategoryService usersToCategoryService,

@@ -6,7 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SpaceWatch.Core.Contracts;
+using SpaceWatch.Core.Contracts.DefaultArea;
 using SpaceWatch.Core.Services;
+using SpaceWatch.Core.Services.DefaultArea;
 using SpaceWatch.Infrastructure.Common;
 using SpaceWatch.Infrastructure.Data;
 
@@ -33,12 +35,16 @@ namespace SpaceWatch
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IRepository, Repository>();
-            services.AddScoped<IMediaTypeService, MediaTypeService>();
+			services.AddScoped<IDataFunctions, DataFunctions>();
+
+			services.AddScoped<IMediaTypeService, MediaTypeService>();
 			services.AddScoped<ICategoryService, CategoryService>();
 			services.AddScoped<ICategoryItemService, CategoryItemService>();
 			services.AddScoped<IContentService, ContentService>();
             services.AddScoped<IUsersToCategoryService, UsersToCategoryService>();
-            services.AddScoped<IDataFunctions, DataFunctions>();
+
+            services.AddScoped<IContentForUserService, ContentForUserService>();
+         
 
             services.AddControllersWithViews();
            
