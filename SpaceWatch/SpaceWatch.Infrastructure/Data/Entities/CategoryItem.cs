@@ -32,7 +32,7 @@ namespace SpaceWatch.Infrastructure.Data.Entities
 
         [NotMapped]
         [Display(Name = "Media Kind")]
-        public IEnumerable<SelectListItem> MediaTypes { get; set; }
+        public IEnumerable<SelectListItem> MediaTypes { get; set; } = null!;
 
         [Display(Name = "Original Release Date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]

@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<Category>
+@model IEnumerable<CategoryViewModel>
 <!-- -------------------------Hero Section----------------------- -->
 <div class="hero section">
     <img class="img-fluid" src="~/images/siteAssets/hero-background.jpg" />
@@ -20,7 +20,7 @@
         const int itemsPerRow = 4;
 
         var count = (Model.Count() / itemsPerRow);
-        var catList = new List<Category>();
+        var catList = new List<CategoryViewModel>();
     }
     @for (int i = 0; i <= count; i++)
     {

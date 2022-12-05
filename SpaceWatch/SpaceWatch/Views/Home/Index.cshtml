@@ -1,12 +1,12 @@
-﻿@model CategoryDetailsModel
+﻿@model CategoryDetailsViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
 
-@if (Model.GroupedCategoryItemsByCategoryModels != null)
+@if (Model.GroupedCategoryItemsByCategory != null)
 {
     <div class="section">
-        @if (Model.GroupedCategoryItemsByCategoryModels.Count() > 0)
+        @if (Model.GroupedCategoryItemsByCategory.Count() > 0)
         {
             <div class="row mt-3">
                 <div class="col-md-12">
@@ -20,7 +20,7 @@
             </div>
             <div class="row mt-3">
                 <div class="col-md-12">
-                    @foreach (var cat in Model.GroupedCategoryItemsByCategoryModels)
+                    @foreach (var cat in Model.GroupedCategoryItemsByCategory)
                     {
                         <div class="card  mt-2">
                             <h5 class="card-header card-title highlighted-text bolder bg-smoke shadow-sm" style="cursor:pointer" data-toggle="collapse" data-target="#collapse_@cat.Id"

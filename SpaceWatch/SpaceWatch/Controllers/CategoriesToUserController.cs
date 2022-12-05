@@ -1,16 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 using SpaceWatch.Core.Contracts.DefaultArea;
 using SpaceWatch.Core.Models.DefaultArea;
 using SpaceWatch.Infrastructure.Data;
-using SpaceWatch.Infrastructure.Data.Entities;
-using SpaceWatch.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SpaceWatch.Controllers

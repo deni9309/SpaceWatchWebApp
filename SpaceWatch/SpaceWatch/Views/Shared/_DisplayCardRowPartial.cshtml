@@ -1,8 +1,8 @@
 ﻿
-@model IEnumerable<Category>
+@model IEnumerable<CategoryViewModel>
 
 <div class="row mt-3">
-    @foreach (Category item in Model)
+    @foreach (CategoryViewModel item in Model)
     {
         <div class="col-md-3">
             <a href="#" class="text-dark text-decoration-none RegisterLink" data-categoryId="@item.Id">

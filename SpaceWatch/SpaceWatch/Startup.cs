@@ -45,7 +45,8 @@ namespace SpaceWatch
 
 			services.AddScoped<ICategoriesToUserService, CategoriesToUserService>();
 			services.AddScoped<IContentForUserService, ContentForUserService>();
-         
+            services.AddScoped<IHomeService, HomeService>();
+
             services.AddControllersWithViews();
            
         }
