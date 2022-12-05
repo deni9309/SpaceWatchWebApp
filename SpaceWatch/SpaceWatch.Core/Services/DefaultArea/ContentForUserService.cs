@@ -27,8 +27,9 @@ namespace SpaceWatch.Core.Services.DefaultArea
 		public async Task<DisplayContentForUserViewModel> GetContent(int categoryItemId)
 		{
 			var content = await _repo.AllReadonly<Content>()
+				.Include(c=>c.CategoryItem)
 				.Where(c => c.IsActive)
-				.Where(c => c.CatItemId == categoryItemId)
+				.Where(c => c.CategoryItem.Id == categoryItemId)
 				.Select(c => new DisplayContentForUserViewModel()
 				{
 					Id = c.Id,

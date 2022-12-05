@@ -70,6 +70,9 @@ namespace SpaceWatch.Controllers
                                                on category.Id equals categoryItem.CategoryId
                                                join content in _context.Content
                                                on categoryItem.Id equals content.CategoryItem.Id
+                                               where content.IsActive== true
+                                               where categoryItem.IsActive== true
+                                               where category.IsActive== true
                                                select new Category
                                                {
                                                    Id = category.Id,
@@ -78,9 +81,22 @@ namespace SpaceWatch.Controllers
                                                    ThumbnailImagePath = category.ThumbnailImagePath
                                                }).Distinct().ToListAsync();
             return categoriesWithContent;
+            //var categoriesWithContent = await (from category in _context.Categories
+            //                                   join categoryItem in _context.CategoryItems
+            //                                   on category.Id equals categoryItem.CategoryId
+            //                                   join content in _context.Content
+            //                                   on categoryItem.Id equals content.CategoryItem.Id
+            //                                   select new Category
+            //                                   {
+            //                                       Id = category.Id,
+            //                                       Title = category.Title,
+            //                                       Description = category.Description,
+            //                                       ThumbnailImagePath = category.ThumbnailImagePath
+            //                                   }).Distinct().ToListAsync();
+            //return categoriesWithContent;
         }
 
-        private IEnumerable<GroupedCategoryItemsByCategoryModel> GetGroupedCategoryItemsByCategory(
+		private IEnumerable<GroupedCategoryItemsByCategoryModel> GetGroupedCategoryItemsByCategory(
             IEnumerable<CategoryItemDetailsModel> categoryItemDetailsModels)
         {
             return from item in categoryItemDetailsModels
@@ -107,6 +123,9 @@ namespace SpaceWatch.Controllers
                           join mediaType in _context.MediaTypes
                           on catItem.MediaTypeId equals mediaType.Id
                           where userCat.UserId == userId
+                          where category.IsActive == true
+                          where catItem.IsActive == true
+                          where content.IsActive == true
                           select new CategoryItemDetailsModel
                           {
                               CategoryId = category.Id,
