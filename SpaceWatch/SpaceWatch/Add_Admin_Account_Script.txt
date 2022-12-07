@@ -4,7 +4,7 @@
         {
             var hasher = new PasswordHasher<ApplicationUser>();
 
-            var passwordHash = hasher.HashPassword(null, "Admin2022@"); // TODO: Hide password
+            var passwordHash = hasher.HashPassword(null, "Admin2022@");
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("INSERT INTO AspNetUsers(Id,UserName,NormalizedUserName,Email,EmailConfirmed,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnabled,AccessFailedCount,NormalizedEmail,PasswordHash,SecurityStamp,FirstName)");

@@ -23,14 +23,14 @@
                     @foreach (var cat in Model.GroupedCategoryItemsByCategory)
                     {
                         <div class="card  mt-2">
-                            <h5 class="card-header card-title highlighted-text bolder bg-smoke shadow-sm" style="cursor:pointer" data-toggle="collapse" data-target="#collapse_@cat.Id"
-                                aria-expanded="false" aria-controls="collapse_@cat.Id">
+                            <h5 class="card-header card-title highlighted-text bolder bg-smoke shadow-sm" style="cursor:pointer" data-toggle="collapse" data-target="#collapse_@cat.Id" aria-expanded="false" aria-controls="collapse_@cat.Id">
                                 <i class="fa-solid fa-angle-down mr-2 ml-2 text-black-50"></i>@cat.Title
                             </h5>
                             <div id="collapse_@cat.Id" class="collapse" aria-expanded="false" aria-controls="collapse_@cat.Id">
                                 <hr />
                                 @foreach (var item in cat.Items)
-                                {<div class="current-element">
+                                {
+                                    <div class="current-element">
                                     <div class="card-group p-2 valing-middle d-block">
                                         <div class="m-1 ">
                                             <div class="mt-2">

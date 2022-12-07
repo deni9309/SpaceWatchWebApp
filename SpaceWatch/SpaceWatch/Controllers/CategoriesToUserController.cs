@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SpaceWatch.Core.Contracts.DefaultArea;
 using SpaceWatch.Core.Models.DefaultArea;
 using SpaceWatch.Infrastructure.Data;
@@ -12,17 +11,14 @@ namespace SpaceWatch.Controllers
     [Authorize]
     public class CategoriesToUserController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataFunctions _dataFunctions;
         private readonly ICategoriesToUserService _categoriesToUserService;
 
-        public CategoriesToUserController(ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager,
+        public CategoriesToUserController(UserManager<ApplicationUser> userManager,
             IDataFunctions dataFunctions,
             ICategoriesToUserService categoriesToUserService)
-        {
-            _context = context;
+        {          
             _userManager = userManager;
             _dataFunctions = dataFunctions;
             _categoriesToUserService = categoriesToUserService;

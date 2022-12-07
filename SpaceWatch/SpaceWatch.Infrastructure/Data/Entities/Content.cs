@@ -26,7 +26,7 @@ namespace SpaceWatch.Infrastructure.Data.Entities
         public CategoryItem CategoryItem { get; set; } = null!;
 
         [Display(Name = "Comments")]
-        public IEnumerable<UserComment>? UserComments { get; set; }
+        public IEnumerable<Comment>? UserComments { get; set; }
 
         [NotMapped]
         public int CategoryId { get; set; }

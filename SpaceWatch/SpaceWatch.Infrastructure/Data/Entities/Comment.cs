@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SpaceWatch.Infrastructure.Data.Entities
 {
-    public class UserComment
+    public class Comment
     {
-        [Key]
+		[Key]
         public int Id { get; set; }
 
         [StringLength(500)]
@@ -16,13 +16,15 @@ namespace SpaceWatch.Infrastructure.Data.Entities
 
         public DateTime DatePosted { get; set; }
 
+        public DateTime? DateEdited { get; set; }
+
         [ForeignKey(nameof(User))]
-        public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public string UserId { get; set; } = null!;
+		public ApplicationUser User { get; set; } = null!;
 
         [ForeignKey(nameof(Content))]
         public int ContentId { get; set; }
-        public Content Content { get; set; }
+        public Content Content { get; set; } = null!;
 
         [Required]
         [DefaultValue(true)]

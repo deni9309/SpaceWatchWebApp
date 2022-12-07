@@ -1,0 +1,12 @@
+﻿@model IEnumerable<CommentViewModel>
+
+@foreach(var item in Model)
+{
+	<div class="container-fluid card-group bg-light d-sm-block">
+		<div class="card-body flex-column">
+			<div class="card-text text-justify">@item.CommentBody</div>
+	    </div>
+		<div class="card-footer text-sm-right text-justify text-black-50">Posted by: @item.UserName on: @item.DatePosted.ToString("dd.MM.yyyy HH:mm")</div>
+	</div>
+	<hr />
+}

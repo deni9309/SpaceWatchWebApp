@@ -36,7 +36,7 @@ namespace SpaceWatch.Infrastructure.Data
         public virtual ICollection<UserCategory> UserCategories { get; set; } = null!;
 
         [ForeignKey("UserId")]
-        public virtual ICollection<UserComment> UserComments { get; set; } = null!;
+        public IEnumerable<Comment>? Comments { get; set; }
     }
 
 
@@ -57,6 +57,6 @@ namespace SpaceWatch.Infrastructure.Data
 
         public DbSet<UserCategory> UserCategories { get; set; }
 
-        public DbSet<UserComment> UserComments { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }

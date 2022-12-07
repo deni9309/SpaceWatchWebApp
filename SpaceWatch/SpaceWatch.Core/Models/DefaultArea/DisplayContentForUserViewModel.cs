@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel;
+
 namespace SpaceWatch.Core.Models.DefaultArea
 {
 	public class DisplayContentForUserViewModel
@@ -10,5 +12,9 @@ namespace SpaceWatch.Core.Models.DefaultArea
 		public string? HtmlContent { get; set; }
 
 		public string? VideoLink { get; set; }
+
+		public int CategoryItemId { get; set; }
+
+		public IEnumerable<CommentViewModel>? Comments { get; set; } = null;
 	}
 }

@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SpaceWatch.Core.Contracts.DefaultArea;
 using SpaceWatch.Core.Models.DefaultArea;
-using SpaceWatch.Extensions;
 using SpaceWatch.Infrastructure.Data;
-using SpaceWatch.Infrastructure.Data.Entities;
 using SpaceWatch.Models;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SpaceWatch.Controllers
@@ -21,23 +17,19 @@ namespace SpaceWatch.Controllers
     /// For signed in users, layout is strongly personalised by displaying only categories he/she is assigned for.   
     /// </summary>
     public class HomeController : Controller
-    {
-        private readonly ApplicationDbContext _context;
-
+    {   
         private readonly ILogger<HomeController> _logger;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHomeService _homeService;
         private readonly ICategoriesToUserService _categoriesToUserService;
 
-        public HomeController(ApplicationDbContext context,
-            ILogger<HomeController> logger,
+        public HomeController(ILogger<HomeController> logger,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             IHomeService homeService,
             ICategoriesToUserService categoriesToUserService)
         {
-            _context = context;
             _logger = logger;
             _signInManager = signInManager;
             _userManager = userManager;
