@@ -9,56 +9,58 @@
 			<hr class="section-divider" />
 
 			<form asp-action="Index">
-			<div class="row mt-3">
-				<div class="col-md-12">
-					<div class="container-box">
-						<div class="container-content">
-						<table class="table table-bordered table-striped table-hover">
-							@if (Model != null)
-							{
-							<thead class="text-light table-orchid">
-								<tr>
-									<th></th>
-									<th>Category/Genre</th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-							@foreach (var category in Model.Categories)
-							{
-								<tr>
-									<td style="text-align: right;vertical-align: middle;">
-										@if (Model.CategoriesSelected != null && Model.CategoriesSelected.Contains(category, new CompareCategories()))
-										{
-										<input type="checkbox" class="form-check text-right" id="CategoriesSelected" name="CategoriesSelected" checked value="@category.Id" />
-										}
-										else
-										{
-										<input type="checkbox" class="form-check text-right" id="CategoriesSelected" name="CategoriesSelected" value="@category.Id" />
-										}
-									</td>
-									<td style="text-align: center; vertical-align: middle">
-										@category.Title
-									</td>
-									<td style="text-align: center; vertical-align: middle; padding:1px">
-										<img src="@category.ThumbnailImagePath" class="text-center img-thumbnail" width="150" />
-									</td>
-								</tr>
-							}
-							</tbody>
-							}
-							<tfoot>
-								<tr>
-									<td colspan="3">
-										<input type="submit" value="Save" style="width:100%" class="btn btn-outline-orchid" />
-									</td>
-								</tr>
-							</tfoot>
-						 </table>
+				<div class="row mt-3">
+					<div class="col-md-12">
+						<div class="container-box">
+							<div class="container-content">
+								<table class="table table-bordered table-striped table-hover">
+									@if (Model != null)
+									{
+										<thead class="text-light table-orchid">
+											<tr>
+												<th></th>
+												<th>Category/Genre</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach (var category in Model.Categories)
+											{
+												<tr>
+													<td style="text-align: right;vertical-align: middle;">
+														@if (Model.CategoriesSelected != null && Model.CategoriesSelected.Contains(category, new CompareCategories()))
+														{
+															<input type="checkbox" class="form-check text-right" id="CategoriesSelected"
+															name="CategoriesSelected" checked value="@category.Id" />
+														}
+														else
+														{
+															<input type="checkbox" class="form-check text-right" id="CategoriesSelected"
+															name="CategoriesSelected" value="@category.Id" />
+														}
+													</td>
+													<td style="text-align: center; vertical-align: middle">
+														@category.Title
+													</td>
+													<td style="text-align: center; vertical-align: middle; padding:1px">
+														<img src="@category.ThumbnailImagePath" class="text-center img-thumbnail" width="150" />
+													</td>
+												</tr>
+											}
+										</tbody>
+									}
+									<tfoot>
+										<tr>
+											<td colspan="3">
+												<input type="submit" value="Save" style="width:100%" class="btn btn-outline-orchid" />
+											</td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 			</form>
 		</div>
 	</div>

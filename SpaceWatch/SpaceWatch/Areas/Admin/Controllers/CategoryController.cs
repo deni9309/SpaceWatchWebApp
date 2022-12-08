@@ -11,6 +11,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
+
         public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
@@ -59,7 +60,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
         }
 
         // POST: CategoryController/Create
-        [HttpPost] // [ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<ActionResult> Create(CategoryViewModel model)
         {
             if(!ModelState.IsValid)
@@ -98,12 +99,6 @@ namespace SpaceWatch.Areas.Admin.Controllers
             };
 
             return View(model);
-            //var category = await _context.Categories.FindAsync(id);
-            //if (category == null)
-            //{
-            //    return NotFound();
-            //}
-            //return View(category);
         }
 
         // POST: CategoryController/Edit/5
@@ -120,28 +115,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
                 ModelState.AddModelError("", "Category does not exist!");
                 return View(model);
             }
-            //if (id != category.Id)
-            //{
-            //    return NotFound();
-            //}
-            //if(ModelState.IsValid)
-            //{
-            //    try {
-            //        _context.Update(category);
-            //        await _context.SaveChangesAsync();
-            //    } catch (DbUpdateConcurrencyException) {
-            //        if(!CategoryExists(category.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Index));   
-            //}
-            //return View(category);
+           
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -171,22 +145,10 @@ namespace SpaceWatch.Areas.Admin.Controllers
             };
 
             return View(model);
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-            //var category = await _context.Categories
-            //    .FirstOrDefaultAsync(c => c.Id == id);
-            //if(category==null)
-            //{
-            //    return NotFound();
-            //}
-            //return View(category);
         }
 
         // POST: CategoryController/Delete/5
         [HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id, CategoryViewModel model)
         {
             if ((await _categoryService.CategoryExists(id)) == false)
@@ -199,15 +161,8 @@ namespace SpaceWatch.Areas.Admin.Controllers
             }
 
             await _categoryService.Delete(id);
-            //var category = await _context.Categories.FindAsync(id);
-            //_context.Categories.Remove(category);
-            //await _context.SaveChangesAsync();
+          
             return RedirectToAction(nameof(Index));
         }
-
-        //private bool CategoryExists(int id)
-        //{
-        //    return _context.Categories.Any(x => x.Id == id);
-        //}
     }
 }

@@ -30,7 +30,10 @@ namespace SpaceWatch
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<ApplicationUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+            })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -49,7 +52,6 @@ namespace SpaceWatch
 			services.AddScoped<IUserAuthService, UserAuthService>();
 
 			services.AddControllersWithViews();
-           
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

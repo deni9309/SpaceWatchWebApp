@@ -87,7 +87,9 @@ namespace SpaceWatch.Core.Services
 
             var usersToDelete = await GetUsersSelectedForCategoryToDelete(userCategoryListModel.CategoryId);
 
-            await _dataFunctions.UpdateUserCategoryEntityAsync(usersToDelete, usersToAdd);
-        }
+#pragma warning disable CS8604 // Possible null reference argument.
+			await _dataFunctions.UpdateUserCategoryEntityAsync(usersToDelete, usersToAdd);
+#pragma warning restore CS8604 // Possible null reference argument.
+		}
     }
 }

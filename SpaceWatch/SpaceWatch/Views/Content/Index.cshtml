@@ -5,7 +5,6 @@
 	<h3 class="section-header">Watching @Model.Title</h3>
 	<hr class="section-divider" />
 	<h5>From category <strong class="text-black-50">@TempData["CategoryTitle"]</strong></h5>
-	
 	@{
 		TempData.Keep("CategoryTitle");
 	}
@@ -16,7 +15,7 @@
 		<div class="row container-fluid align-content-sm-center">
 			<div class="mt-1 col-md-10 offset-1">
 				<div id="VideoContent" class="videoContainer mt-3">
-					<iframe width="550" height="350" src="@Model.VideoLink" allowfullscreen="" oncanplay="true" frameborder="0">
+					<iframe width="550" height="350" src="@Model.VideoLink" allowfullscreen="" frameborder="0">
 					</iframe>
 				</div>
 			</div>
@@ -34,13 +33,18 @@
 	}
 	<hr class="section-divider" />
 
-	<div class="btn btn-outline-dark" style="cursor:pointer" data-toggle="collapse" data-target="#collapse_@Model.Id" aria-expanded="false" aria-controls="collapse_@Model.Id">
-		<i class="fa-solid fa-pen mr-2 ml-2 text-black-50"></i>Add Comment
+	<div class="container-fluid align-content-center">
+		<div class="mt-1 mb-3 col-md-10 offset-lg-1">
+			<div class="btn btn-outline-dark" style="cursor:pointer" data-toggle="collapse" data-target="#collapse_@Model.Id" aria-expanded="false" aria-controls="collapse_@Model.Id">
+				<i class="fa-solid fa-pen mr-2 ml-2 text-black-50"></i>Add Comment
+			</div>
+			<div id="collapse_@Model.Id" class="collapse" aria-expanded="false" aria-controls="collapse_@Model.Id">
+				<partial name="_CreateCommentPartial" model="new CommentAddViewModel(){ContentId = Model.Id};" />
+			</div>
+			<hr />
+		</div>
 	</div>
-	<div id="collapse_@Model.Id" class="collapse" aria-expanded="false" aria-controls="collapse_@Model.Id">
-		<partial name="_CreateCommentPartial" model="new CommentAddViewModel(){ContentId = Model.Id};" />
-	</div>
-	<hr />
+
 	@if (Model.Comments != null)
 	{
 		<div class="container-fluid align-content-center">
@@ -53,10 +57,11 @@
 	}
 	else
 	{
-		<div class="row container-fluid align-content-sm-center">
-			<div class="mt-1 mb-3 col-md-10 offset-1">
-				<div id="TextContent" class="mt-3 text-justify">
-					There are no comments yet! <a asp-action="CreateComment" asp-route-contentId="@Model.Id" asp-route-categoryItemId="@Model.CategoryItemId" asp-controller="Content" class="btn btn-outline-dark">Be the first to add one!</a>
+		<div class="container-fluid align-content-center">
+			<div class="mt-3 mb-3 text-black-50 display-3">There are no comments yet. Be the first one to comment on!</div>
+			<div class="mt-1 mb-3 col-md-10 offset-lg-1">
+				<div class="mt-3 text-justify">
+					<partial name="_CommentsViewPartial" model="@Model.Comments">
 				</div>
 			</div>
 		</div>

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using SpaceWatch.Core.Contracts;
 using SpaceWatch.Core.Models;
 
-
 namespace SpaceWatch.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -21,7 +20,6 @@ namespace SpaceWatch.Areas.Admin.Controllers
         // GET: Admin/MediaType
         public async Task<IActionResult> Index()
         {
-            //return View(await _context.MediaTypes.ToListAsync());
             return View(await _mediaTypeService.GetAll());
         }
 
@@ -35,12 +33,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
             }
 
             var model = await _mediaTypeService.MediaTypeDetailsById(id);
-            //var mediaType = await _context.MediaTypes
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (mediaType == null)
-            //{
-            //    return NotFound();
-            //}
+
             return View(model);
         }
 
@@ -52,8 +45,6 @@ namespace SpaceWatch.Areas.Admin.Controllers
         }
 
         // POST: Admin/MediaType/Create
-
-        
         [HttpPost]
         public async Task<IActionResult> Create(MediaTypeViewModel model)
         {
@@ -66,18 +57,6 @@ namespace SpaceWatch.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-        //public async Task<IActionResult> Create([Bind("Id,Title,ThumbnailImagePath")] MediaType mediaType)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(mediaType);
-        //    }
-
-        //    _context.Add(mediaType);
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction("Index", "MediaType");
-        //}
 
         // GET: Admin/MediaType/Edit/5
         public async Task<IActionResult> Edit(int id)
@@ -96,12 +75,6 @@ namespace SpaceWatch.Areas.Admin.Controllers
             };
 
             return View(model);
-            //var mediaType = await _context.MediaTypes.FindAsync(id);
-            //if (mediaType == null)
-            //{
-            //    return NotFound();
-            //}
-            //return View(mediaType);
         }
 
         // POST: Admin/MediaType/Edit/5
@@ -128,36 +101,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Details), new { model.Id });
         }
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ThumbnailImagePath")] MediaType mediaType)
-        //{
-        //    if (id != mediaType.Id)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(mediaType);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!MediaTypeExists(mediaType.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(mediaType);
-        //}
-
+        
         // GET: Admin/MediaType/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
@@ -177,19 +121,6 @@ namespace SpaceWatch.Areas.Admin.Controllers
             };
 
             return View(model);
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var mediaType = await _context.MediaTypes
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (mediaType == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //return View(mediaType);
         }
 
         // POST: Admin/MediaType/Delete/5
@@ -208,16 +139,7 @@ namespace SpaceWatch.Areas.Admin.Controllers
 
             await _mediaTypeService.Delete(id);
 
-            return RedirectToAction(nameof(Index));
-            //var mediaType = await _context.MediaTypes.FindAsync(id);
-            //_context.MediaTypes.Remove(mediaType);
-            //await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index));         
         }
-
-        //private bool MediaTypeExists(int id)
-        //{
-        //    return _context.MediaTypes.Any(e => e.Id == id);
-        //}
     }
 }

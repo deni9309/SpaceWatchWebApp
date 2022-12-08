@@ -21,6 +21,7 @@ namespace SpaceWatch.Core.Models.DefaultArea
         public string UserName { get; set; } = null!;
 
         public int CategoryItemId { get; set; }
+
         public int ContentId { get; set; }
     }
 }

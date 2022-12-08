@@ -1,16 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Logging;
 using SpaceWatch.Core.Contracts;
 using SpaceWatch.Core.Contracts.DefaultArea;
 using SpaceWatch.Core.Models.DefaultArea;
-using SpaceWatch.Core.Services;
-using SpaceWatch.Extensions;
 using SpaceWatch.Infrastructure.Data;
-using SpaceWatch.Infrastructure.Data.Entities;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -56,35 +51,6 @@ namespace SpaceWatch.Controllers
             TempData["CategoryTitle"] = contentDetails.CategoryName;
             return View(model);
         }
-
-   //     [HttpGet]
-   //     public async Task<IActionResult> CreateComment(int contentId, int cattegoryItemId)
-   //     {
-			//if ((await _contentService.ContentExists(contentId)) == false)
-   //         {
-   //             _logger.LogError(nameof(CreateComment), "Content to be commented does not exist in database.");
-
-   //             return NotFound();
-   //         }
-
-   //         if ((_signInManager.IsSignedIn(User) == false))
-   //         {
-   //             _logger.LogInformation(nameof(CreateComment), "Not signed in user tries to comment a content.");
-   //             return RedirectToAction("Login", "UserAuth");
-   //         }
-
-			//var user = await _userManager.FindByIdAsync(User.Claims.ElementAt(0).Value);
-   //         var userId = user?.Id;
-
-			//var model = new CommentAddViewModel()
-   //         {
-   //             UserId = userId,
-   //             ContentId = contentId,
-   //             CategoryItemId = cattegoryItemId
-   //         };
-
-   //         return PartialView("_CreateCommentPartial", model);
-   //     }
 
         [HttpPost]
         public async Task<IActionResult> CreateComment(int contentId, int categoryItemId, CommentAddViewModel model)

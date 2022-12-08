@@ -6,29 +6,30 @@
 
 <link href="~/fontawesome/css/all.css" rel="stylesheet" />
 <link href="~/css/site.css" rel="stylesheet" />
+
 @if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result, "admin"))
 {
-    <li class="btn btn-orchid dropdown rounded-0 show">
-        <a class="dropdown-toggle text-decoration-none text-white text-lg-1-1-rem" href="#" data-toggle="dropdown"><i class="fas fa-tools mr-1 ml-1"></i>Admin Settings</a>
-        <div class="dropdown-menu text-lg-1-1-rem">
-            <a class="dropdown-item rounded-0 nav-item nav-fill bg-light highlighted-text" asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="fas fa-sitemap mr-1 ml-1"></i>Categories</a>
-            <a class="dropdown-item rounded-0 nav-item nav-fill bg-light highlighted-text" asp-area="Admin" asp-controller="UsersToCategory" asp-action="Index"><i class="fas fa-users mr-1 ml-1"></i>Users to Categories</a>
-            <div class="dropdown-divider" href="#"></div>
-            <a class="dropdown-item rounded-0 nav-item nav-fill bg-light highlighted-text" asp-area="Admin" asp-controller="MediaType" asp-action="Index"><i class="fas fa-photo-video mr-1 ml-1"></i>Media Types</a>
-            <div class="dropdown-divider" href="#"></div>
-            <a class="dropdown-item rounded-0 nav-item nav-fill bg-light highlighted-text" asp-area="Admin" asp-controller="UsersToCategory" asp-action="ManageUsers"><i class="fas fa-user-cog mr-1 ml-1"></i>Manage Users</a>
-        </div>
-    </li>
+	<li class="btn btn-orchid dropdown rounded-0 show">
+		<a class="dropdown-toggle text-decoration-none text-white text-lg-1-1-rem" href="#" data-toggle="dropdown"><i class="fas fa-tools mr-1 ml-1"></i>Admin Settings</a>
+		<div class="dropdown-menu text-lg-1-1-rem">
+			<a class="dropdown-item rounded-0 nav-item nav-fill bg-light highlighted-text" asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="fas fa-sitemap mr-1 ml-1"></i>Categories</a>
+			<a class="dropdown-item rounded-0 nav-item nav-fill bg-light highlighted-text" asp-area="Admin" asp-controller="UsersToCategory" asp-action="Index"><i class="fas fa-users mr-1 ml-1"></i>Users to Categories</a>
+			<div class="dropdown-divider" href="#"></div>
+			<a class="dropdown-item rounded-0 nav-item nav-fill bg-light highlighted-text" asp-area="Admin" asp-controller="MediaType" asp-action="Index"><i class="fas fa-photo-video mr-1 ml-1"></i>Media Types</a>
+			<div class="dropdown-divider" href="#"></div>
+			<a class="dropdown-item rounded-0 nav-item nav-fill bg-light highlighted-text" asp-area="Admin" asp-controller="UsersToCategory" asp-action="ManageUsers"><i class="fas fa-user-cog mr-1 ml-1"></i>Manage Users</a>
+		</div>
+	</li>
 }
 else if (!SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item text-lg-1-1-rem">
-        <a class="btn rounded-0 nav-link bg-dark text-white text-lg-1-1-rem" href="#Genres"><i class="fas fa-film mr-1 ml-1"></i>What to Watch</a>
-    </li>
-    <li class="nav-item text-lg-1-1-rem">
-        <a class="btn rounded-0 nav-link bg-dark text-white text-lg-1-1-rem" href="#ContactUs"><i class="fas fa-phone-volume mr-1 ml-1"></i>Contact Us</a>
-    </li>
-    <li class="nav-item text-lg-1-1-rem">
-        <a class="btn rounded-0 nav-link bg-dark text-white text-lg-1-1-rem" href="#AboutUs"><i class="fas fa-building mr-1 ml-1"></i>About Us</a>
-    </li>
+	<li class="nav-item text-lg-1-1-rem">
+		<a class="btn rounded-0 nav-link bg-dark text-white text-lg-1-1-rem" href="#Genres"><i class="fas fa-film mr-1 ml-1"></i>What to Watch</a>
+	</li>
+	<li class="nav-item text-lg-1-1-rem">
+		<a class="btn rounded-0 nav-link bg-dark text-white text-lg-1-1-rem" href="#ContactUs"><i class="fas fa-phone-volume mr-1 ml-1"></i>Contact Us</a>
+	</li>
+	<li class="nav-item text-lg-1-1-rem">
+		<a class="btn rounded-0 nav-link bg-dark text-white text-lg-1-1-rem" href="#AboutUs"><i class="fas fa-building mr-1 ml-1"></i>About Us</a>
+	</li>
 }

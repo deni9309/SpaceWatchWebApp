@@ -4,11 +4,6 @@ using SpaceWatch.Core.Contracts.DefaultArea;
 using SpaceWatch.Core.Models.DefaultArea;
 using SpaceWatch.Infrastructure.Common;
 using SpaceWatch.Infrastructure.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpaceWatch.Core.Services.DefaultArea
 {
@@ -59,31 +54,24 @@ namespace SpaceWatch.Core.Services.DefaultArea
 
         public async Task<IEnumerable<GroupedCategoryItemsByCategory>> GetGroupedCategoryItemsByCategory(IEnumerable<CategoryItemDetailsModel> catItemModels)
         {
+
             List<GroupedCategoryItemsByCategory> groupedResult = new List<GroupedCategoryItemsByCategory>();
 
-            var groupedCategoryItems = catItemModels.GroupBy(item => item.CategoryId);
-
-            foreach (var item in groupedCategoryItems)
+            await Task.Run(() =>
             {
-                groupedResult.Add(new GroupedCategoryItemsByCategory()
+				var groupedCategoryItems = catItemModels.GroupBy(item => item.CategoryId);
+				foreach (var item in groupedCategoryItems)
                 {
-                    Id = item.Key,
-                    Title = item.Select(c => c.CategoryTitle).FirstOrDefault(),
-                    Items = item
-                });
-            }
+                    groupedResult.Add(new GroupedCategoryItemsByCategory()
+                    {
+                        Id = item.Key,
+                        Title = item.Select(c => c.CategoryTitle).FirstOrDefault(),
+                        Items = item
+                    });
+                }
+            });
 
             return groupedResult;
-
-
-            //return from item in catItemModels
-            //       group item by item.CategoryId into g
-            //       select new GroupedCategoryItemsByCategory()
-            //       {
-            //           Id = g.Key,
-            //           Title = g.Select(c => c.CategoryTitle).FirstOrDefault(),
-            //           Items = g
-            //       };
         }
     }
 }

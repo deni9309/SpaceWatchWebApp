@@ -1,6 +1,4 @@
 ﻿
-using System.ComponentModel;
-
 namespace SpaceWatch.Core.Models.DefaultArea
 {
 	public class DisplayContentForUserViewModel

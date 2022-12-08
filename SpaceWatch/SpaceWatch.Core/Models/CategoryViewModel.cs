@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using SpaceWatch.Infrastructure.Data.Extensions.Interfaces;
-using System.Collections.Generic;
+﻿using SpaceWatch.Infrastructure.Data.Extensions.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace SpaceWatch.Core.Models
 {
-    public class CategoryViewModel : IPrimaryProperties
+	public class CategoryViewModel : IPrimaryProperties
     {
 		public int Id { get; set; }
 
@@ -18,8 +16,5 @@ namespace SpaceWatch.Core.Models
 		[Required]
 		[Display(Name = "Thumbnail Image Path")]
 		public string ThumbnailImagePath { get; set; } = null!;
-
-	//	public IEnumerable<CategoryItemViewModel>? CategoryItems { get; set; }
-
 	}
 }

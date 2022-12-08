@@ -1,8 +1,4 @@
-﻿using SpaceWatch.Infrastructure.Data.Entities;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SpaceWatch.Core.Models
 {
@@ -14,7 +10,7 @@ namespace SpaceWatch.Core.Models
 		[Required]
 		public string Title { get; set; } = null!;
 
-		[Display(Name = "HTML/Text Content")]
+		[Display(Name = "Text Content")]
 		public string? HtmlContent { get; set; }
 
 		[Display(Name = "Video Link")]
@@ -25,11 +21,5 @@ namespace SpaceWatch.Core.Models
 		public string? CategoryName { get; set; } = null!;
 
 		public int CatItemId { get; set; }
-
-		//[Display(Name = "Media Item")]
-		//public CategoryItemViewModel? CategoryItem { get; set; }
-
-		//[Display(Name = "Comments")]
-		//public IEnumerable<UserComment>? UserComments { get; set; }
 	}
 }
