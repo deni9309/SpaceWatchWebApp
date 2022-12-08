@@ -78,19 +78,16 @@ namespace SpaceWatch.Core.Services
 
         public async Task UpdateUsersSubscriptionsForCategory(UserCategoryListModel userCategoryListModel)
         {
-            List<UserCategory>? usersSelectedForCategoryToAdd = null;
+            List<UserCategory>? usersToAdd = null;
 
             if (userCategoryListModel.UsersSelected != null)
             {
-                usersSelectedForCategoryToAdd =
-                    await GetUsersSelectedForCategoryToAdd(userCategoryListModel);
+                usersToAdd = await GetUsersSelectedForCategoryToAdd(userCategoryListModel);
             }
 
-            var usersSelectedForCategoryToDelete = 
-                await GetUsersSelectedForCategoryToDelete(userCategoryListModel.CategoryId);
+            var usersToDelete = await GetUsersSelectedForCategoryToDelete(userCategoryListModel.CategoryId);
 
-            await _dataFunctions.UpdateUserCategoryEntityAsync(usersSelectedForCategoryToDelete,
-                usersSelectedForCategoryToAdd);
+            await _dataFunctions.UpdateUserCategoryEntityAsync(usersToDelete, usersToAdd);
         }
     }
 }

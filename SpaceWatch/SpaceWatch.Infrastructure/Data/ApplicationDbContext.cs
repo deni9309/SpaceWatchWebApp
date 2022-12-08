@@ -7,6 +7,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SpaceWatch.Infrastructure.Data
 {
+    /// <summary>
+    /// Extends default IdentityUser class with properties for user's personal information 
+    /// </summary>
     public class ApplicationUser : IdentityUser
     {
         [Display(Name = "First Name")]

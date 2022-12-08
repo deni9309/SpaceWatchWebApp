@@ -1,19 +1,24 @@
 ﻿using SpaceWatch.Core.Models.DefaultArea;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpaceWatch.Core.Contracts.DefaultArea
 {
-    public interface IHomeService
+	/// <summary>
+	/// Provides methods that serve Home page functionality and layout specifications
+	/// </summary>
+	public interface IHomeService
     {
-        Task<IEnumerable<CategoryItemDetailsModel>> GetCategoryItemDetailsForUser(string userId);
+		/// <summary>
+		/// Gets detail information for each active category item user is assigned to.
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns>IEnumerable of CategoryItemDetailsModel</returns>
+		Task<IEnumerable<CategoryItemDetailsModel>> GetCategoryItemDetailsForUser(string userId);
 
-        Task<IEnumerable<GroupedCategoryItemsByCategory>> GetGroupedCategoryItemsByCategory(IEnumerable<CategoryItemDetailsModel> catItemModels);
-
-
-
+		/// <summary>
+		/// Groups collection of category items by Category.
+		/// </summary>
+		/// <param name="catItemModels"></param>
+		/// <returns>IEnumerable of GroupedCategoryItemsByCategory</returns>
+		Task<IEnumerable<GroupedCategoryItemsByCategory>> GetGroupedCategoryItemsByCategory(IEnumerable<CategoryItemDetailsModel> catItemModels);
     }
 }

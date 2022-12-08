@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SpaceWatch.Infrastructure.Data.Entities
 {
+    /// <summary>
+    /// Represents a media (video)
+    /// </summary>
     public class Content
     {
         [Key]
@@ -13,19 +16,15 @@ namespace SpaceWatch.Infrastructure.Data.Entities
         [Required]
         public string Title { get; set; } = null!;
 
-        [Display(Name = "HTML/Text Content")]
         public string? HtmlContent { get; set; }
 
-        [Display(Name = "Video Link")]
         public string? VideoLink { get; set; }
 
         [ForeignKey(nameof(CategoryItem))]
         public int CatItemId { get; set; }
 
-        [Display(Name = "Media Item")]
         public CategoryItem CategoryItem { get; set; } = null!;
 
-        [Display(Name = "Comments")]
         public IEnumerable<Comment>? UserComments { get; set; }
 
         [NotMapped]

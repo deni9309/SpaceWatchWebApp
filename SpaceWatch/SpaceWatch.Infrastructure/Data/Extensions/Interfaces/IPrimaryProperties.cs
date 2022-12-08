@@ -1,6 +1,9 @@
 ﻿namespace SpaceWatch.Infrastructure.Data.Extensions.Interfaces
 {
-    public interface IPrimaryProperties
+	/// <summary>
+	/// Used to extend classes with properties that SelectListItem type needs.
+	/// </summary>
+	public interface IPrimaryProperties
     {
         int Id { get; set; }
         string Title { get; set; }

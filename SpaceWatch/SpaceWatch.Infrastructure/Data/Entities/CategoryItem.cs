@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SpaceWatch.Infrastructure.Data.Entities
 {
+    /// <summary>
+    /// An Item from specific category 
+    /// </summary>
     public class CategoryItem
     {
 		[NotMapped]
@@ -25,25 +28,18 @@ namespace SpaceWatch.Infrastructure.Data.Entities
         [Required]
         public Category Category { get; set; } = null!;
 
-        [Required(ErrorMessage = "Please select a valid item from the '{0}' dropdown list.")]
-        [Display(Name = "Media Kind")]
+        [Required]
         [ForeignKey(nameof(MediaType))]
         public int MediaTypeId { get; set; }
 
         [NotMapped]
-        [Display(Name = "Media Kind")]
         public IEnumerable<SelectListItem> MediaTypes { get; set; } = null!;
 
-        [Display(Name = "Original Release Date")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateTimeItemReleased
         {
             get { return _releaseDate == DateTime.MinValue ? DateTime.Now : _releaseDate; }
             set { _releaseDate = value;}
         }
-
-        [NotMapped]
-        public int ContentId { get; set; }
 
         [Required]
         [DefaultValue(true)]

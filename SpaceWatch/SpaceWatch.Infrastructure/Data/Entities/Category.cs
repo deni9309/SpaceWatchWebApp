@@ -5,26 +5,28 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SpaceWatch.Infrastructure.Data.Entities
 {
+    /// <summary>
+    /// Represents a Genre for the media content (action, drama, horror...)
+    /// </summary>
     public class Category : IPrimaryProperties
     {
         [Key]
         public int Id { get; set; }
 
-        [StringLength(200, MinimumLength = 2)]
+        [StringLength(200)]
         [Required]
         public string Title { get; set; } = null!;
 
 		public string? Description { get; set; }
 
         [Required]
-        [Display(Name = "Thumbnail Image Path")]
         public string ThumbnailImagePath { get; set; } = null!;
 
-        public virtual ICollection<CategoryItem> CategoryItems { get; set; }
+        public virtual ICollection<CategoryItem> CategoryItems { get; set; } = null!;
 
-        public virtual ICollection<UserCategory> UserCategories { get; set; }
+        public virtual ICollection<UserCategory> UserCategories { get; set; } = null!;
 
-        [Required]
+		[Required]
         [DefaultValue(true)]
         public bool IsActive { get; set; } = true;
     }

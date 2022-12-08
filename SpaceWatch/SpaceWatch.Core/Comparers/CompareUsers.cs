@@ -1,6 +1,6 @@
 ﻿using SpaceWatch.Core.Models;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+#nullable disable
 
 namespace SpaceWatch.Core.Comparers
 {

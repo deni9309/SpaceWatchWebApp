@@ -3,6 +3,9 @@ using SpaceWatch.Infrastructure.Data.Entities;
 
 namespace SpaceWatch.Core.Contracts.DefaultArea
 {
+	/// <summary>
+	/// Provides methods that serve Category business logic for users
+	/// </summary>
 	public interface ICategoriesToUserService
 	{
 		/// <summary>
