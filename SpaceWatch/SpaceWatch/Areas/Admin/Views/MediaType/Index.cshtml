@@ -7,43 +7,46 @@
 <div class="section">
 	<h3 class="section-header text-orange">All Media Types</h3>
 	<hr class="section-divider" />
-	<div class="col-md-10 offset-lg-1">
-	<p>
-		<partial name="_CreateButtonPartial" model="0" />
-	</p>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>
-						@Html.DisplayNameFor(model => model.Title)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.ThumbnailImagePath)
-					</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model)
-				{
+	<div class="container-fluid align-items-center mt-3">
+		<div class="container col-md-8 mb-8">
+			<p>
+				<partial name="_CreateButtonPartial" model="0" />
+			</p>
+			<table class="table-responsive table-hover">
+				<thead class="text-center bg-smoke">
 					<tr>
-						<td style="vertical-align:middle">
-							@item.Title
-						</td>
-						<td style="vertical-align:middle">
-							<div class="card p-1">
-								@item.ThumbnailImagePath
-							</div>
-						</td>
-						<td style="vertical-align:middle">
-							<div class="btn-group-vertical" style="width:max-content">
-								<partial name="_RUDButtonsPartial" model="@item.Id" />
-							</div>
-						</td>
+						<th class="card-title text-left p-3">
+							@Html.DisplayNameFor(model => model.Title)
+						</th>
+						<th class="card-title p-3">
+							@Html.DisplayNameFor(model => model.ThumbnailImagePath)
+						</th>
+						<th class="card-title pt-2 pb-2"></th>
 					</tr>
-				}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr class="border-bottom border-lime">
+							<td style="vertical-align:middle" class="p-3">
+								@item.Title
+							</td>
+							<td style="vertical-align:middle" class="p-3">
+								<div class="card p-1">
+									<img src="@item.ThumbnailImagePath" class="img-thumbnail" style="width:15em" alt="@item.Title" />
+								</div>
+							</td>
+							<td style="vertical-align:middle" class="p-3">
+								<div class="btn-group-vertical" style="width:max-content">
+									<partial name="_RUDButtonsPartial" model="@item.Id" />
+								</div>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+			<p></p>
+		</div>
 	</div>
-	</div>
+</div>
 

@@ -26,7 +26,7 @@ namespace SpaceWatch.Core.Models
 		[Display(Name = "Media Kind")]
 		public IEnumerable<SelectListItem> MediaTypes { get; set; } = null!;
 
-		[Display(Name = "Original Release Date")]
+		[Display(Name = "Release Date")]
 		[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
 		public DateTime DateTimeItemReleased
 		{

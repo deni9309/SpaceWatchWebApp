@@ -98,7 +98,7 @@
 
                 var hasErrors = $(parsed).find("input[name='RegistrationInValid']").val() == 'true';
 
-                if (hasErrors) {
+                if (hasErrors == true) {
                     $("#UserRegistrationModal").html(data);
                     var userRegisterButton = $("#UserRegistrationModal button[name='register']").click(onUserRegisterClick);
 

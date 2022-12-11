@@ -26,6 +26,9 @@ a.navbar-brand {
 .text-lg-1-1-rem{
     font-size:1.1rem;
 }
+.text-sm-0-7-rem {
+    font-size: 0.7rem;
+}
 
 /* Provide sufficient contrast against white background */
 a {
@@ -235,6 +238,20 @@ a:hover .card {
     inset: 0;
     margin: auto;
     text-align: center;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    padding: 1px;
+}
+.container-form {
+    position: inherit;
+    inset: 0;
+    margin: auto;
+    text-align: left;
     width: 100%;
     height: auto;
     display: flex;

@@ -7,44 +7,44 @@
 <div class="section">
 	<h3 class="section-header">Available Content</h3>
 	<hr class="section-divider" />
-<p>
-	<a class="btn btn-orchid" asp-action="Create">Create a Content</a>
-</p>
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.Title)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.HtmlContent)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.VideoLink)
-			</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model)
-		{
+	<p>
+		<a class="btn btn-orchid" asp-action="Create">Create a Content</a>
+	</p>
+	<table class="table">
+		<thead>
 			<tr>
-				<td style="vertical-align:middle">
-					@item.Title
-				</td>
-				<td style="vertical-align:middle">
-					@item.HtmlContent
-				</td>
-				<td style="vertical-align:middle">
-					@item.VideoLink
-				</td>
-				<td style="vertical-align:middle" width="200">
-					<div class="btn-group-vertical">
-						<partial name="_RUDButtonsPartial" model="@item.Id" />
-					</div>
-				</td>
+				<th>
+					@Html.DisplayNameFor(model => model.Title)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.HtmlContent)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.VideoLink)
+				</th>
+				<th></th>
 			</tr>
-		}
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td style="vertical-align:middle">
+						@item.Title
+					</td>
+					<td style="vertical-align:middle">
+						@item.HtmlContent
+					</td>
+					<td style="vertical-align:middle">
+						@item.VideoLink
+					</td>
+					<td style="vertical-align:middle" width="200">
+						<div class="btn-group-vertical">
+							<partial name="_RUDButtonsPartial" model="@item.Id" />
+						</div>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
 </div>

@@ -7,52 +7,62 @@
 <div class="section">
 	<h3 class="section-header text-orange">All Categories</h3>
 	<hr class="section-divider" />
-	<div class="col-md-10 offset-lg-1">
-	<p>
-		<partial name="_CreateButtonPartial" model="0" />
-	</p>
-	
-	
-		<table class="table">
-			<thead>
-				<tr>
-					<th>
-						@Html.DisplayNameFor(model => model.Title)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Description)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.ThumbnailImagePath)
-					</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model)
-				{
+	<div class="container-fluid align-items-center mt-3">
+		<div class="container col-sm-10 mb-8">
+			<p class="ml-2 mb-2">
+				<partial name="_CreateButtonPartial" model="0" />
+			</p>
+
+
+			<table class="table-responsive table-hover p-2">
+				<thead class="text-center bg-smoke pt-2 pb-2">
 					<tr>
-						<td style="vertical-align:middle">
-							@item.Title
-						</td>
-						<td style="vertical-align:middle">
-							@item.Description
-						</td>
-						<td style="vertical-align:middle">
-							<div class="card p-1">
-								@item.ThumbnailImagePath
-							</div>
-						</td>
-						<td style="vertical-align:middle">
-							<div class="btn-group-vertical" style="width:8em">
-								<partial name="_RUDButtonsPartial" model="@item.Id" />
-								<a asp-area="Admin" asp-controller="CategoryItem" asp-action="Index" asp-route-categoryId="@item.Id"
-							   class="btn btn-outline-orchid">Update Items</a>
-							</div>
-						</td>
+						<th class="text-center pb-2 pt-2">
+							@Html.DisplayNameFor(model => model.Title)
+						</th>
+						<th class="card-title pt-2 pb-2">
+							@Html.DisplayNameFor(model => model.Description)
+						</th>
+						<th class="card-title pb-2 pt-2">
+							Thumbnail Image
+						</th>
+						<th class="card-title pt-2 pb-2"></th>
 					</tr>
-				}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr class="border-bottom border-lime">
+							<td style="vertical-align:middle; width:8em" class="text-center m-3">
+								@item.Title
+							</td>
+							<td style="vertical-align:middle; width:20em" class="m-3">
+								@if (item.Description.Length > 100)
+								{
+									@item.Description.Substring(0, 100);
+									<span class="highlighted-text text-sm-0-8-rem">... View Details for more.</span>
+								}
+								else
+								{
+									@item.Description
+								}
+							</td>
+							<td style="vertical-align:middle; width:15em">
+								<div class="m-2">
+									<img src="@item.ThumbnailImagePath" class="img-thumbnail" alt="@item.Title" />
+								</div>
+							</td>
+							<td style="vertical-align:middle" class="pt-2 pb-2">
+								<div class="btn-group-vertical">
+									<partial name="_RUDButtonsPartial" model="@item.Id" />
+									<a asp-area="Admin" asp-controller="CategoryItem" asp-action="Index" asp-route-categoryId="@item.Id"
+								   class="btn btn-outline-orchid">Update Items</a>
+								</div>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
 		</div>
 	</div>
+</div>

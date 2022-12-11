@@ -109,19 +109,23 @@ namespace SpaceWatch.Controllers
             return PartialView("_UserRegistrationPartial", registrationModel);
         }
 
-        //[AllowAnonymous]
-        //public async Task<bool> UserNameExists(string userName)
-        //{
-        //    bool userNameExists = await _context
-        //        .Users
-        //        .AnyAsync(u => u.UserName.ToUpper() == userName.ToUpper());
+        [AllowAnonymous]
+        public async Task<bool> UserNameExists(string userName)
+        {
+            if(string.IsNullOrWhiteSpace(userName))
+            {
+                return false;
+            }
 
-        //    if(userNameExists)
-        //    {
-        //        return true;
-        //    }
-        //    return false;
-        //}
+            bool userNameExists = await _userAuthService.UserNameExists(userName);
+
+            if (userNameExists)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         private void AddErrorsToModelState(IdentityResult result)
         {

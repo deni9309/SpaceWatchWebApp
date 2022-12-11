@@ -11,8 +11,8 @@
         TempData.Keep("CategoryTitle");
     }
     <hr class="section-divider" />
-    <div class="row mt-3">
-        <div class="col-md-6">
+    <div class="container-fluid align-items-center mt-3">
+        <div class="container col-md-8 ">
             <form asp-controller="CategoryItem" asp-action="Create" method="post">
                 <input type="hidden" asp-for="CategoryId" />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
