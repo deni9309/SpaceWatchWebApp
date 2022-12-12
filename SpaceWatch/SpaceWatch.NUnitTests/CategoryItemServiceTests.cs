@@ -38,9 +38,8 @@ namespace SpaceWatch.NUnitTests
 		}
 
 		[Test]
-		public async Task TestCategoryItemEditReturnsCorectResultForCorrectId()
+		public async Task Test_CategoryItem_Edit_ReturnsCorectResultForCorrectId()
 		{
-			//Arrange
 			var loggerMock = new Mock<ILogger<CategoryItemService>>();
 			_logger = loggerMock.Object;
 			var _repo = new Repository(_context);
@@ -56,7 +55,6 @@ namespace SpaceWatch.NUnitTests
 			});
 			await _repo.SaveChangesAsync();
 
-			//Act
 			await _categoryItemService.Edit(1, new CategoryItemAddViewModel()
 			{
 				Description = "CategoryItem is edited",
@@ -65,17 +63,15 @@ namespace SpaceWatch.NUnitTests
 				CategoryId = 1,
 				DateTimeItemReleased = DateTime.MinValue
 			});
-			var dbSpaceWatch = await _repo.GetByIdAsync<CategoryItem>(1);
+			var entity = await _repo.GetByIdAsync<CategoryItem>(1);
 
-			//Assert
-			Assert.That(dbSpaceWatch.Description, Is.EqualTo("CategoryItem is edited"));
-			Assert.That(dbSpaceWatch.Id, Is.EqualTo(1));
+			Assert.That(entity.Description, Is.EqualTo("CategoryItem is edited"));
+			Assert.That(entity.Id, Is.EqualTo(1));
 		}
 
 		[Test]
 		public async Task Test_GetAllCategoryItemsFromCategory_ReturnsActiveAndCorrectOnes()
 		{
-			//Arrange
 			var loggerMock = new Mock<ILogger<CategoryItemService>>();
 			_logger = loggerMock.Object;
 			var _repo = new Repository(_context);
@@ -90,19 +86,16 @@ namespace SpaceWatch.NUnitTests
 			});
 			await _repo.SaveChangesAsync();
 
-			//Act
 			var categoryItemModels = await _categoryItemService.GetAllCategoryItemsFromCategory(2);
 
-			//Assert
 			Assert.That(categoryItemModels.Any(c => c.Id == 3), Is.False);
 			Assert.That(categoryItemModels.Any(c => c.Id == 8), Is.False);
-			Assert.That(2, Is.EqualTo(categoryItemModels.Count()));
+			Assert.That(categoryItemModels.Count(), Is.EqualTo(2));
 		}
 
 		[Test]
 		public async Task Test_CategorytItemDeatilsById_ReturnsCorrectResult()
 		{
-			//Arrange
 			var loggerMock = new Mock<ILogger<CategoryItemService>>();
 			_logger = loggerMock.Object;
 			var _repo = new Repository(_context);
@@ -119,10 +112,8 @@ namespace SpaceWatch.NUnitTests
 			});
 			await _repo.SaveChangesAsync();
 
-			//Act
 			var entityToCheck = await _categoryItemService.CategoryItemDetailsById(10);
 
-			//Assert
 			Assert.That(entityToCheck.Id, Is.EqualTo(10));
 			Assert.That(entityToCheck.Title, Is.EqualTo("t10"));
 			Assert.That(entityToCheck.Description, Is.EqualTo("d10"));
@@ -131,7 +122,7 @@ namespace SpaceWatch.NUnitTests
 		}
 
 		[Test]
-		public async Task TestCategoryItemAdd()
+		public async Task Test_CategoryItem_Add()
 		{
 			var loggerMock = new Mock<ILogger<CategoryItemService>>();
 			_logger = loggerMock.Object;
@@ -146,18 +137,15 @@ namespace SpaceWatch.NUnitTests
 				DateTimeItemReleased = DateTime.MinValue
 			};
 
-			//Act
 			int id = await _categoryItemService.Add(model);
-			var expected = await _repo.GetByIdAsync<CategoryItem>(id);
+			var addedEntity = await _repo.GetByIdAsync<CategoryItem>(id);
 
-			//Assert
-			Assert.That(expected.Description, Is.EqualTo("This CategoryItem is added now"));
+			Assert.That(addedEntity.Description, Is.EqualTo("This CategoryItem is added now"));
 		}
 
 		[Test]
-		public async Task TestCategoryItemDelete()
+		public async Task Test_CategoryItem_Delete()
 		{
-			//Arrange
 			var loggerMock = new Mock<ILogger<CategoryItemService>>();
 			_logger = loggerMock.Object;
 			var _repo = new Repository(_context);
@@ -174,11 +162,9 @@ namespace SpaceWatch.NUnitTests
 			});
 			await _repo.SaveChangesAsync();
 
-			//Act
 			await _categoryItemService.Delete(100);
 			var deletedEntity = await _repo.GetByIdAsync<CategoryItem>(100);
 
-			//Assert
 			Assert.That(deletedEntity.IsActive, Is.EqualTo(false));
 		}
 

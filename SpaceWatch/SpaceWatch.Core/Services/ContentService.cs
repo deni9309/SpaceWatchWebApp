@@ -23,11 +23,11 @@ namespace SpaceWatch.Core.Services
 		{
 			var content = new Content()
 			{
-				Title= model.Title,
-				CatItemId= model.CatItemId,
-				HtmlContent= model.HtmlContent,
-				VideoLink= model.VideoLink,
-				CategoryId= model.CategoryId
+				Title = model.Title,
+				CatItemId = model.CatItemId,
+				HtmlContent = model.HtmlContent,
+				VideoLink = model.VideoLink,
+				CategoryId = model.CategoryId
 			};
 
 			try 

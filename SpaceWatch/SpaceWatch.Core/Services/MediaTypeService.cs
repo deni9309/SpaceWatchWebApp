@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SpaceWatch.Core.Contracts;
 using SpaceWatch.Core.Models;
 using SpaceWatch.Infrastructure.Common;
@@ -11,9 +12,12 @@ namespace SpaceWatch.Core.Services
 	public class MediaTypeService : IMediaTypeService
 	{
 		private readonly IRepository _repo;
-		public MediaTypeService(IRepository repository)
+		private readonly ILogger<MediaTypeService> _logger;
+		public MediaTypeService(IRepository repository,
+			ILogger<MediaTypeService> logger)
 		{
 			_repo = repository;
+			_logger = logger;
 		}
 
         public async Task Add(MediaTypeViewModel model)
@@ -24,18 +28,39 @@ namespace SpaceWatch.Core.Services
 				ThumbnailImagePath = model.ThumbnailImagePath
 			};
 
-			await _repo.AddAsync(mediaType);
-			await _repo.SaveChangesAsync();
+			try
+			{
+				await _repo.AddAsync(mediaType);
+				await _repo.SaveChangesAsync();
+			}
+			catch (Exception ex) 
+			{
+				_logger.LogError(nameof(Add), ex);
+				throw new ApplicationException("Database failed to save info.", ex);
+			}		
         }
 
         public async Task Edit(int mediaTypeId, MediaTypeViewModel model)
         {
-			var mediaType = await _repo.GetByIdAsync<MediaType>(mediaTypeId);
+			try
+			{
+				var mediaType = await _repo.GetByIdAsync<MediaType>(mediaTypeId);
 
-			mediaType.Title = model.Title;
-			mediaType.ThumbnailImagePath = model.ThumbnailImagePath;
-			
-			await _repo.SaveChangesAsync();
+				mediaType.Title = model.Title;
+				mediaType.ThumbnailImagePath = model.ThumbnailImagePath;
+
+				await _repo.SaveChangesAsync();
+			}
+			catch (ArgumentNullException ex)
+			{
+				_logger.LogError(nameof(Edit), ex);
+				throw new ArgumentNullException(ex.Message, ex.InnerException);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(nameof(Edit), ex);
+				throw new ApplicationException("An error occured while trying to update entity.", ex);
+			}
         }
 
         public async Task<IEnumerable<MediaTypeViewModel>> GetAll()
@@ -67,25 +92,44 @@ namespace SpaceWatch.Core.Services
 
         public async Task Delete(int mediaTypeId)
         {
-            var mediaType = await _repo.GetByIdAsync<MediaType>(mediaTypeId);
+			try
+			{
+				if ((await MediaTypeExists(mediaTypeId)) == true)
+				{
+					var mediaType = await _repo.GetByIdAsync<MediaType>(mediaTypeId);
 
-            mediaType.IsActive = false;
+					mediaType.IsActive = false;
 
-            await _repo.SaveChangesAsync();
+					await _repo.SaveChangesAsync();
+				}
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(nameof(Delete), ex);
+				throw new ApplicationException(ex.Message, ex.InnerException);
+			}			
         }
 
         public async Task<MediaTypeViewModel> MediaTypeDetailsById(int id)
         {
-			return await _repo.AllReadonly<MediaType>()
-				.Where(m => m.IsActive)
-				.Where(m => m.Id == id)
-				.Select(m => new MediaTypeViewModel()
-				{
-					ThumbnailImagePath = m.ThumbnailImagePath,
-					Title = m.Title,
-					Id = m.Id
-				})
-				.FirstAsync();
+			try
+			{
+				return await _repo.AllReadonly<MediaType>()
+					.Where(m => m.IsActive)
+					.Where(m => m.Id == id)
+					.Select(m => new MediaTypeViewModel()
+					{
+						ThumbnailImagePath = m.ThumbnailImagePath,
+						Title = m.Title,
+						Id = m.Id
+					})
+					.FirstAsync();
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(nameof(MediaTypeDetailsById), ex);
+				throw new ApplicationException(ex.Message, ex.InnerException);
+			}		
         }
 
         public async Task<bool> MediaTypeExists(int mediaTypeId)
