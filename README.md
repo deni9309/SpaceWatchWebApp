@@ -1,6 +1,6 @@
 # SpaceWatchWebApp
 
-This is a web application for watching and comment all kinds of videos like Movies, TV series, Shows, Reality programs, Documentaries, Music videos, Shorts and more...<br>
+This is a web application for watching and posting comments on all kinds of videos like Movies, TV series, Shows, Reality programs, Documentaries, Music videos, Shorts and more...<br>
 
 To use SpaceWatch functionality user must register first.
 <p>Registered user can:
