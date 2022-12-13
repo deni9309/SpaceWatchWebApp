@@ -106,28 +106,28 @@ namespace SpaceWatch.Core.Services
 			}
 		}
 
-        public async Task<IEnumerable<CategoryItemViewModel>> GetAllCategoryItemsFromCategory(int categoryId)
-        {
-            var categoryItems = await _repo.AllReadonly<CategoryItem>()
-                .Include(c => c.Category)
-                .Where(c => c.CategoryId == categoryId && c.IsActive)
-                .Select(c => new CategoryItemViewModel()
-                {
-                    CategoryId = c.CategoryId,
-                    CategoryName = c.Category.Title,
-                    MediaTypeId = c.MediaTypeId,
-                    Id = c.Id,
-                    Title = c.Title,
-                    DateTimeItemReleased = c.DateTimeItemReleased,
-                    Description = c.Description,
-                    ContentId = (_repo.AllReadonly<Content>().Any(co => co.CatItemId == c.Id) ?
-                    (_repo.AllReadonly<Content>().First(co => co.CatItemId == c.Id).Id) : 0)
-                    //GetContentIdForCategoryItem(c.Id)
-                })
-                .ToListAsync();
+        //public async Task<IEnumerable<CategoryItemViewModel>> GetAllCategoryItemsFromCategory(int categoryId)
+        //{
+        //    var categoryItems = await _repo.AllReadonly<CategoryItem>()
+        //        .Include(c => c.Category)
+        //        .Where(c => c.CategoryId == categoryId && c.IsActive)
+        //        .Select(c => new CategoryItemViewModel()
+        //        {
+        //            CategoryId = c.CategoryId,
+        //            CategoryName = c.Category.Title,
+        //            MediaTypeId = c.MediaTypeId,
+        //            Id = c.Id,
+        //            Title = c.Title,
+        //            DateTimeItemReleased = c.DateTimeItemReleased,
+        //            Description = c.Description,
+        //            ContentId = (_repo.AllReadonly<Content>().Any(co => co.CatItemId == c.Id) ?
+        //            (_repo.AllReadonly<Content>().First(co => co.CatItemId == c.Id).Id) : 0)
+        //            //GetContentIdForCategoryItem(c.Id)
+        //        })
+        //        .ToListAsync();
 
-            return categoryItems;
-        }
+        //    return categoryItems;
+        //}
       
         public async Task Edit(int categoryId, CategoryViewModel model)
 		{

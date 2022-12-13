@@ -91,23 +91,31 @@ namespace SpaceWatch.Core.Services
 		}
 
 		/// <summary>
-		/// Executes only if releted content exists.
+		/// Executes only if related content exists.
 		/// Sets IsActive property to false on content item when its principal entity is set to so.
 		/// </summary>
 		/// <param name="categoryItemId"></param>
 		/// <returns></returns>
 		public async Task DeleteReletedContent(int categoryItemId)
 		{
-			if (await _repo.AllReadonly<Content>().AnyAsync(c => c.CatItemId == categoryItemId)) 
+			try
 			{
-                var content = await _repo.All<Content>()
-                .Where(c => c.CatItemId == categoryItemId)
-                .FirstAsync();
+				if (await _repo.AllReadonly<Content>().AnyAsync(c => c.CatItemId == categoryItemId))
+				{
+					var content = await _repo.All<Content>()
+					.Where(c => c.CatItemId == categoryItemId)
+					.FirstAsync();
 
-				content.IsActive = false;
+					content.IsActive = false;
 
-				await _repo.SaveChangesAsync();
-            }
+					await _repo.SaveChangesAsync();
+				}
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(nameof(DeleteReletedContent), ex);
+				throw new ApplicationException("An error occured while trying to delete related content.", ex);
+			}		
 		}
 
 		public async Task<int> Edit(int categoryItemId, CategoryItemAddViewModel model)

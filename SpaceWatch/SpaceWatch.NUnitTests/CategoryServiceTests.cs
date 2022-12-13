@@ -32,7 +32,7 @@ namespace SpaceWatch.NUnitTests
 		}
 
 		[Test]
-		public async Task TestCategoryEdit()
+		public async Task Test_Category_Edit()
 		{
 			var loggerMock = new Mock<ILogger<CategoryService>>();
 			_logger = loggerMock.Object;
@@ -60,9 +60,8 @@ namespace SpaceWatch.NUnitTests
 		}
 
 		[Test]
-		public async Task TestCategoryGetAllReturnsOnlyActiveOnes()
+		public async Task Test_Category_GetAll_ReturnsOnlyActiveOnes()
 		{
-			//Arrange
 			var loggerMock = new Mock<ILogger<CategoryService>>();
 			_logger = loggerMock.Object;
 			var _repo = new Repository(_context);
@@ -76,16 +75,14 @@ namespace SpaceWatch.NUnitTests
 			});
 			await _repo.SaveChangesAsync();
 
-			//Act
 			var categoryModels = await _categoryService.GetAll();
 
-			//Assert
 			Assert.That(categoryModels.Any(cm => cm.Id == 3), Is.False);
 			Assert.That(categoryModels.Count(), Is.EqualTo(3));
 		}
 
 		[Test]
-		public async Task TestCategorytDeatilsByIdReturnsCorrectResult()
+		public async Task Test_CategorytDeatilsById()
 		{
 			var loggerMock = new Mock<ILogger<CategoryService>>();
 			_logger = loggerMock.Object;
@@ -110,7 +107,7 @@ namespace SpaceWatch.NUnitTests
 		}
 
 		[Test]
-		public async Task TestCategoryAdd()
+		public async Task Test_Category_Add()
 		{
 			var loggerMock = new Mock<ILogger<CategoryService>>();
 			_logger = loggerMock.Object;
@@ -131,7 +128,7 @@ namespace SpaceWatch.NUnitTests
 		}
 
 		[Test]
-		public async Task TestCategoryDelete()
+		public async Task Test_Category_Delete()
 		{
 			var loggerMock = new Mock<ILogger<CategoryService>>();
 			_logger = loggerMock.Object;
@@ -151,6 +148,51 @@ namespace SpaceWatch.NUnitTests
 			var deletedEntity = await _repo.GetByIdAsync<Category>(1);
 
 			Assert.That(deletedEntity.IsActive, Is.EqualTo(false));
+		}
+
+		[Test]
+		public async Task Test_DeleteReletedCategoryItemsAndContentFromCategory()
+		{
+			var loggerMock = new Mock<ILogger<CategoryService>>();
+			_logger = loggerMock.Object;
+			var _repo = new Repository(_context);
+			_categoryService = new CategoryService(_repo, _logger);
+			await _repo.AddAsync(new Category() { Id = 1, Title = "", Description = "", ThumbnailImagePath = "", IsActive = true });
+			await _repo.AddAsync(new CategoryItem() { Id = 2, CategoryId = 1, MediaTypeId = 1, Title = "", DateTimeItemReleased = DateTime.MinValue, Description = "", IsActive = true });
+			await _repo.AddAsync(new Content() { Id = 3, CategoryId = 1, CatItemId = 2, Title = "", HtmlContent = "", VideoLink = "", IsActive = true });
+			await _repo.SaveChangesAsync();
+
+			await _categoryService.DeleteReletedCategoryItemsAndContentFromCategory(1);
+			var deletedCategoryItem = await _repo.GetByIdAsync<CategoryItem>(2);
+			var deletedContent = await _repo.GetByIdAsync<Content>(3);
+
+			Assert.True(deletedCategoryItem.CategoryId == 1);
+			Assert.That(deletedCategoryItem.IsActive, Is.EqualTo(false));
+			Assert.True(deletedContent.CategoryId == 1);
+			Assert.That(deletedContent.IsActive, Is.EqualTo(false));
+		}
+
+		[Test]
+		public async Task Test_CategoryExists_ReturnsTrueIfActiveWithValidId()
+		{
+			var loggerMock = new Mock<ILogger<CategoryService>>();
+			_logger = loggerMock.Object;
+			var _repo = new Repository(_context);
+			_categoryService = new CategoryService(_repo, _logger);
+			await _repo.AddRangeAsync(new List<Category>()
+			{
+				new Category() { Id = 1, Title = "", Description = "", ThumbnailImagePath = "", IsActive = false },
+				new Category() { Id = 5, Title = "", Description = "", ThumbnailImagePath = "", IsActive = true }
+			});
+			await _repo.SaveChangesAsync();
+
+			var category1_Exists = await _categoryService.CategoryExists(1);
+			var category5_Exists = await _categoryService.CategoryExists(5);
+			var category100_Exists = await _categoryService.CategoryExists(100);
+
+			Assert.That(category1_Exists, Is.EqualTo(false));
+			Assert.That(category5_Exists, Is.EqualTo(true));
+			Assert.That(category100_Exists, Is.EqualTo(false));
 		}
 
 		[TearDown]

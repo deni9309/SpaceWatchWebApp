@@ -7,12 +7,6 @@ using SpaceWatch.Core.Services;
 using SpaceWatch.Infrastructure.Common;
 using SpaceWatch.Infrastructure.Data.Entities;
 using SpaceWatch.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace SpaceWatch.NUnitTests
 {
@@ -158,7 +152,7 @@ namespace SpaceWatch.NUnitTests
 				Title = "title",
 				Description = "description",
 				DateTimeItemReleased = DateTime.MinValue,
-				IsActive = true,				
+				IsActive = true				
 			});
 			await _repo.SaveChangesAsync();
 
@@ -166,6 +160,47 @@ namespace SpaceWatch.NUnitTests
 			var deletedEntity = await _repo.GetByIdAsync<CategoryItem>(100);
 
 			Assert.That(deletedEntity.IsActive, Is.EqualTo(false));
+		}
+
+		[Test]
+		public async Task Test_CategoryItem_DeleteReletedContent()
+		{
+			var loggerMock = new Mock<ILogger<CategoryItemService>>();
+			_logger = loggerMock.Object;
+			var _repo = new Repository(_context);
+			_categoryItemService = new CategoryItemService(_repo, _logger);
+			await _repo.AddAsync(new CategoryItem() { Id = 1, CategoryId = 1, MediaTypeId = 1, Title = "", DateTimeItemReleased = DateTime.MinValue, Description = "", IsActive = true });
+			await _repo.AddAsync(new Content() { Id = 1, CategoryId = 1, CatItemId = 1, Title = "", HtmlContent = "", VideoLink = "", IsActive = true });
+			await _repo.SaveChangesAsync();
+
+			await _categoryItemService.DeleteReletedContent(1);
+			var deletedContent = await _repo.GetByIdAsync<Content>(1);
+
+			Assert.True(deletedContent.CategoryItem.Id == 1);
+			Assert.That(deletedContent.IsActive, Is.EqualTo(false));
+		}
+
+		[Test]
+		public async Task Test_CategoryItemExists_ReturnsTrueIfActiveWithValidId()
+		{
+			var loggerMock = new Mock<ILogger<CategoryItemService>>();
+			_logger = loggerMock.Object;
+			var _repo = new Repository(_context);
+			_categoryItemService = new CategoryItemService(_repo, _logger);
+			await _repo.AddRangeAsync(new List<CategoryItem>()
+			{
+				new CategoryItem() { Id = 1, CategoryId = 2, MediaTypeId = 2, Title = "", Description = "", DateTimeItemReleased = DateTime.MinValue, IsActive = false },
+				new CategoryItem() { Id = 5, CategoryId = 2, MediaTypeId = 2, Title = "", Description = "", DateTimeItemReleased = DateTime.MinValue, IsActive = true }
+			});
+			await _repo.SaveChangesAsync();
+
+			var catItem1_Exists = await _categoryItemService.CategoryItemExists(1);
+			var catItem5_Exists = await _categoryItemService.CategoryItemExists(5);
+			var catItem100_Exists = await _categoryItemService.CategoryItemExists(100);
+
+			Assert.That(catItem1_Exists, Is.EqualTo(false));
+			Assert.That(catItem5_Exists, Is.EqualTo(true));
+			Assert.That(catItem100_Exists, Is.EqualTo(false));
 		}
 
 		[TearDown]

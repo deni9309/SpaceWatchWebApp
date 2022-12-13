@@ -7,11 +7,6 @@ using SpaceWatch.Core.Services;
 using SpaceWatch.Infrastructure.Common;
 using SpaceWatch.Infrastructure.Data;
 using SpaceWatch.Infrastructure.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpaceWatch.NUnitTests
 {
@@ -88,6 +83,29 @@ namespace SpaceWatch.NUnitTests
 			var content = await _repo.GetByIdAsync<Content>(1);
 
 			Assert.That(content.Title, Is.EqualTo("content successfully edited"));
+		}
+
+		[Test]
+		public async Task Test_ContentExists_ReturnsTrueIfActiveWithValidId()
+		{
+			var loggerMock = new Mock<ILogger<ContentService>>();
+			_logger = loggerMock.Object;
+			var _repo = new Repository(_context);
+			_contentService = new ContentService(_repo, _logger);
+			await _repo.AddRangeAsync(new List<Content>()
+			{
+				new Content() { Id = 1, CategoryId = 1, CatItemId = 10, Title = "", VideoLink = "", HtmlContent="", IsActive = false },
+				new Content() { Id = 5, CategoryId = 1, CatItemId = 11, Title = "", VideoLink = "", HtmlContent="", IsActive = true }
+			});
+			await _repo.SaveChangesAsync();
+
+			var content1_Exists = await _contentService.ContentExists(1);
+			var content5_Exists = await _contentService.ContentExists(5);
+			var content100_Exists = await _contentService.ContentExists(100);
+
+			Assert.That(content1_Exists, Is.EqualTo(false));
+			Assert.That(content5_Exists, Is.EqualTo(true));
+			Assert.That(content100_Exists, Is.EqualTo(false));
 		}
 
 		[TearDown]

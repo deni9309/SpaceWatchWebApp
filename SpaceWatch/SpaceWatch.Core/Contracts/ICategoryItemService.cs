@@ -58,7 +58,7 @@ namespace SpaceWatch.Core.Contracts
 		Task Delete(int categoryItemId);
 
 		/// <summary>
-		/// "Deletes" sets IsActive=false on all releted entities that depend on this specific CategoryItem.
+		/// "Deletes" sets IsActive=false on related Content(if exists) that depends on this specific CategoryItem.
 		/// Method does not really remove records from database.
 		/// </summary>
 		/// <param name="categoryItemId"></param>

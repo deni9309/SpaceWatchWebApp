@@ -126,6 +126,29 @@ namespace SpaceWatch.NUnitTests
 			Assert.That(collection.Any(mt => mt.Id == 10), Is.False);
 		}
 
+		[Test]
+		public async Task Test_MediaTypeExists_ReturnsTrueIfActiveWithValidId()
+		{
+			var loggerMock = new Mock<ILogger<MediaTypeService>>();
+			_logger = loggerMock.Object;
+			var _repo = new Repository(_context);
+			_mediaTypeService = new MediaTypeService(_repo, _logger);
+			await _repo.AddRangeAsync(new List<MediaType>()
+			{
+				new MediaType() { Id = 1, Title = "", ThumbnailImagePath = "", IsActive = false },
+				new MediaType() { Id = 5, Title = "", ThumbnailImagePath = "", IsActive = true }
+			});
+			await _repo.SaveChangesAsync();
+
+			var media1_Exists = await _mediaTypeService.MediaTypeExists(1);
+			var media5_Exists = await _mediaTypeService.MediaTypeExists(5);
+			var media100_Exists = await _mediaTypeService.MediaTypeExists(100);
+
+			Assert.That(media1_Exists, Is.EqualTo(false));
+			Assert.That(media5_Exists, Is.EqualTo(true));
+			Assert.That(media100_Exists, Is.EqualTo(false));
+		}
+
 		[TearDown]
 		public void TearDown()
 		{

@@ -33,19 +33,19 @@ namespace SpaceWatch.Areas.Admin.Controllers
             return View(await _contentService.GetAll());
         }
 
-        // GET: Admin/Content/Details/5
-        [HttpGet]
-        public async Task<IActionResult> Details(int id)
-        {
-			if ((await _contentService.ContentExists(id)) == false)
-			{
-				return NotFound();
-			}
+  //      // GET: Admin/Content/Details/5
+  //      [HttpGet]
+  //      public async Task<IActionResult> Details(int id)
+  //      {
+		//	if ((await _contentService.ContentExists(id)) == false)
+		//	{
+		//		return NotFound();
+		//	}
 
-            var model = await _contentService.ContentDetailsById(id);
+  //          var model = await _contentService.ContentDetailsById(id);
 
-            return View(model);
-		}
+  //          return View(model);
+		//}
 
         // GET: Admin/Content/Create
         [HttpGet]
