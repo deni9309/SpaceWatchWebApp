@@ -48,8 +48,10 @@ namespace SpaceWatch.Core.Services
 														   select new UserModel()
 														   {
 															   Id = userCat.UserId
-														   }).ToListAsync();
+														   })
+                                                           .ToListAsync();
 				return savedSelectedUsersForCategory;
+
 			}
             catch (Exception ex)
             {
