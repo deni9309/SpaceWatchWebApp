@@ -40,14 +40,22 @@ namespace SpaceWatch.Core.Services
 
         public async Task<List<UserModel>> GetSavedSelectedUsersForCategory(int categoryId)
         {
-            var savedSelectedUsersForCategory = await (from userCat in _repo.All<UserCategory>()
-                                                       where userCat.CategoryId == categoryId
-                                                       where userCat.Category.IsActive == true
-                                                       select new UserModel()
-                                                       {
-                                                           Id = userCat.UserId
-                                                       }).ToListAsync();
-            return savedSelectedUsersForCategory;
+            try
+            {
+				var savedSelectedUsersForCategory = await (from userCat in _repo.All<UserCategory>()
+														   where userCat.CategoryId == categoryId
+														   where userCat.Category.IsActive == true
+														   select new UserModel()
+														   {
+															   Id = userCat.UserId
+														   }).ToListAsync();
+				return savedSelectedUsersForCategory;
+			}
+            catch (Exception ex)
+            {
+                _logger.LogError(nameof(GetSavedSelectedUsersForCategory), ex);
+                throw new ApplicationException(ex.Message, ex.InnerException);
+            }
         }
 
         public async Task<List<UserCategory>> GetUsersSelectedForCategoryToAdd(UserCategoryListModel userCategoryListModel)

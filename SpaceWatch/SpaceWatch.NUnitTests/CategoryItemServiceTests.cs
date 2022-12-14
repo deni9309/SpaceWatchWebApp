@@ -32,6 +32,32 @@ namespace SpaceWatch.NUnitTests
 		}
 
 		[Test]
+		public async Task Test_GetCategoryTitleByCatItemId_ReturnsRightNameForActiveCategory()
+		{
+			var loggerMock = new Mock<ILogger<CategoryItemService>>();
+			_logger = loggerMock.Object;
+			var _repo = new Repository(_context);
+			_categoryItemService = new CategoryItemService(_repo, _logger);
+			await _repo.AddRangeAsync(new List<Category>()
+			{
+				new Category() { Id = 10, Title = "Title for category 10", Description = "", ThumbnailImagePath = "", IsActive = true },
+				new Category() { Id = 20, Title = "Title for category 20", Description = "", ThumbnailImagePath = "", IsActive = true }
+			});
+			await _repo.AddRangeAsync(new List<CategoryItem>()
+			{
+				new CategoryItem() { Id = 1, CategoryId = 10, MediaTypeId = 1, Title = "", DateTimeItemReleased = DateTime.MinValue, Description = "", IsActive = true },
+				new CategoryItem() { Id = 2, CategoryId = 20, MediaTypeId = 1, Title = "", DateTimeItemReleased = DateTime.MinValue, Description = "", IsActive = true }
+			});
+			await _repo.SaveChangesAsync();
+
+			string categoryTitle10 = await _categoryItemService.GetCategoryTitleByCatItemId(1);
+			string categoryTitle20 = await _categoryItemService.GetCategoryTitleByCatItemId(2);
+
+			Assert.True(categoryTitle10 == "Title for category 10");
+			Assert.True(categoryTitle20 == "Title for category 20");
+		}
+
+		[Test]
 		public async Task Test_CategoryItem_Edit_ReturnsCorectResultForCorrectId()
 		{
 			var loggerMock = new Mock<ILogger<CategoryItemService>>();

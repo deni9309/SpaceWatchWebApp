@@ -172,14 +172,22 @@ namespace SpaceWatch.Core.Services
 
 		public async Task<string> GetCategoryTitleByCatItemId(int categoryItemId)
 		{
-			return await _repo.AllReadonly<CategoryItem>()
-				.Where(c => c.IsActive)
-				.Include(c => c.Category)
-				.Where(c => c.Id == categoryItemId)
-				.Select(ca => ca.Category.Title).FirstAsync();
+			try
+			{
+				return await _repo.AllReadonly<CategoryItem>()
+				   .Where(c => c.IsActive)
+				   .Include(c => c.Category)
+				   .Where(c => c.Id == categoryItemId && c.Category.IsActive)
+				   .Select(ca => ca.Category.Title)
+				   .FirstAsync();
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(nameof(GetCategoryTitleByCatItemId), ex);
 
+				throw new ApplicationException("Ann error occured while trying to retrieve Category Title from database.", ex);
+			}
 		}
-
 		//private int GetContentIdForCategoryItem(int categoryItemId)
 		//{
 		//	//var content = _repo.AllReadonly<Content>()				
@@ -192,27 +200,5 @@ namespace SpaceWatch.Core.Services
 		//	}
 		//	return 0;
 		//}
-		//List<CategoryItem> list = await (from catItem in _context.CategoryItems
-		//								 join contentItem in _context.Content
-		//								 on catItem.Id equals contentItem.CategoryItem.Id
-		//								 into gj
-		//from subContent in gj.DefaultIfEmpty()
-
-		//								 where catItem.CategoryId == categoryId
-		//								 select new CategoryItem
-		//								 {
-		//									 Id = catItem.Id,
-		//									 Title = catItem.Title,
-		//									 Description = catItem.Description,
-		//									 DateTimeItemReleased = catItem.DateTimeItemReleased,
-		//									 MediaTypeId = catItem.MediaTypeId,
-		//									 CategoryId = categoryId,
-		//									 ContentId = (subContent != null) ? subContent.Id : 0
-		//								 }).ToListAsync();
-
-		//ViewBag.CategoryId = categoryId;
-
-		//ViewBag.CategoryTitle = _context.Categories
-		//	.FirstOrDefaultAsync(c => c.Id == categoryId).Result.Title;
 	} 
 }
