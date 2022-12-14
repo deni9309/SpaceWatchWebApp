@@ -73,7 +73,7 @@ namespace SpaceWatch.NUnitTests
 		}
 
 		[Test]
-		public async Task Test_AddComment_DoesntAddNewCommentOnInvalidUser()
+		public async Task Test_AddComment_DoesNotAddNewCommentOnInvalidUser()
 		{
 			var loggerMock = new Mock<ILogger<ContentForUserService>>();
 			_logger = loggerMock.Object;

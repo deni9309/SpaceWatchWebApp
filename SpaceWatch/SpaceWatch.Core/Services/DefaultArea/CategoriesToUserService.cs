@@ -94,7 +94,6 @@ namespace SpaceWatch.Core.Services.DefaultArea
 
 		public async Task<List<UserCategory>> GetCategoriesToAddForUser(string[] categoriesSelected, string userId)
 		{
-
 			List<UserCategory> categoriesToAdd = new List<UserCategory>();
 
 			foreach (var categoryId in categoriesSelected)
@@ -106,12 +105,6 @@ namespace SpaceWatch.Core.Services.DefaultArea
 				});
 			}
 
-			//var categoriesToAdd = (from categoryId in categoriesSelected
-			//					   select new UserCategory
-			//					   {
-			//						   UserId = userId,
-			//						   CategoryId = int.Parse(categoryId)
-			//					   }).ToList();
 			return await Task.Run(() => categoriesToAdd);
 		}
 
