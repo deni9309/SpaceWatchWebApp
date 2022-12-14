@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SpaceWatch.Core.Contracts;
+using SpaceWatch.Core.Extensions;
 using SpaceWatch.Core.Models;
 using SpaceWatch.Infrastructure.Common;
 using SpaceWatch.Infrastructure.Data.Entities;
-using SpaceWatch.Infrastructure.Data.Extensions;
 
 namespace SpaceWatch.Core.Services
 {

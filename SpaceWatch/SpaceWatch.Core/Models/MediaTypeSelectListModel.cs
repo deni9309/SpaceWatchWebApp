@@ -1,4 +1,4 @@
-﻿using SpaceWatch.Infrastructure.Data.Extensions.Interfaces;
+﻿using SpaceWatch.Core.Extensions.Interfaces;
 
 namespace SpaceWatch.Core.Models
 {

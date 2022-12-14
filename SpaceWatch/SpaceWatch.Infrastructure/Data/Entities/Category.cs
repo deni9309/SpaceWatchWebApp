@@ -1,5 +1,4 @@
-﻿using SpaceWatch.Infrastructure.Data.Extensions.Interfaces;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -8,8 +7,8 @@ namespace SpaceWatch.Infrastructure.Data.Entities
     /// <summary>
     /// Represents a Genre for the media content (action, drama, horror...)
     /// </summary>
-    public class Category : IPrimaryProperties
-    {
+    public class Category 
+    { 
         [Key]
         public int Id { get; set; }
 
