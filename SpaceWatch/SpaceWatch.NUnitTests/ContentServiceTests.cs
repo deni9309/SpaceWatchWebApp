@@ -32,6 +32,50 @@ namespace SpaceWatch.NUnitTests
 		}
 
 		[Test]
+		public async Task Test_ContentDetailsByCategoryItemId_ReturnsInfoForActiveContent()
+		{
+			var loggerMock = new Mock<ILogger<ContentService>>();
+			_logger = loggerMock.Object;
+			var _repo = new Repository(_context);
+			_contentService = new ContentService(_repo, _logger);
+			await _repo.AddAsync(new Category() { Id = 1, Title = "", Description = "", ThumbnailImagePath = "", IsActive = true });
+			await _repo.AddRangeAsync(new List<CategoryItem>()
+			{
+				new CategoryItem() { Id = 1, CategoryId = 1, MediaTypeId = 1, Title = "", DateTimeItemReleased = DateTime.MinValue, Description = "", IsActive = true },
+				new CategoryItem() { Id = 3, CategoryId = 1, MediaTypeId = 1, Title = "", DateTimeItemReleased = DateTime.MinValue, Description = "", IsActive = true }
+			});
+			await _repo.AddRangeAsync(new List<Content>()
+			{
+				new Content() { Id = 11, CategoryId = 1, CatItemId = 1, Title = "This shoud be returned content", VideoLink = "", HtmlContent="", IsActive = true },
+				new Content() { Id = 15, CategoryId = 1, CatItemId = 3, Title = "", VideoLink = "", HtmlContent="", IsActive = false }
+			});
+			await _repo.SaveChangesAsync();
+
+			var returnedForActiveContent = await _contentService.ContentDetailsByCategoryItemId(1);
+
+			Assert.True(returnedForActiveContent.CatItemId == 1);
+			Assert.True(returnedForActiveContent.Title == "This shoud be returned content");
+			Assert.CatchAsync<ApplicationException>(async ()
+				=> await _contentService.ContentDetailsByCategoryItemId(3), "Could not find Content details for given categoryItemId");
+		}
+
+		[Test]
+		public async Task Test_ContentDetailsById_ShouldThrowForInvalidId()
+		{
+			var loggerMock = new Mock<ILogger<ContentService>>();
+			_logger = loggerMock.Object;
+			var _repo = new Repository(_context);
+			_contentService = new ContentService(_repo, _logger);
+			await _repo.AddAsync(new Category() { Id = 1, Title = "", Description = "", ThumbnailImagePath = "", IsActive = true });
+			await _repo.AddAsync(new CategoryItem() { Id = 1, CategoryId = 1, MediaTypeId = 1, Title = "", DateTimeItemReleased = DateTime.MinValue, Description = "", IsActive = true });
+			await _repo.AddAsync(new Content() { Id = 2, CategoryId = 1, CatItemId = 1, Title = "", VideoLink = "", HtmlContent = "", IsActive = true });
+			await _repo.SaveChangesAsync();
+
+			Assert.CatchAsync<Exception>(async ()
+				=> await _contentService.ContentDetailsById(222), "Could not find Content details for given Id");
+		}
+
+		[Test]
 		public async Task Test_Content_Add()
 		{
 			var loggerMock = new Mock<ILogger<ContentService>>();

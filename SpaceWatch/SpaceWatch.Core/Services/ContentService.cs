@@ -46,27 +46,35 @@ namespace SpaceWatch.Core.Services
 
         public async Task<ContentViewModel> ContentDetailsByCategoryItemId(int categoryItemId)
         {
-			return await _repo.AllReadonly<Content>()
-				.Include(c=>c.CategoryItem)
-				.Include(c=>c.CategoryItem.Category)
+			var contetModel = await _repo.AllReadonly<Content>()
+				.Include(c => c.CategoryItem)
+				.Include(c => c.CategoryItem.Category)
 				 .Where(c => c.IsActive)
 				 .Where(c => c.CatItemId == categoryItemId)
-				 .Select(c=> new ContentViewModel()
+				 .Select(c => new ContentViewModel()
 				 {
 					 Id = c.Id,
-					 Title=c.Title,
+					 Title = c.Title,
 					 VideoLink = c.VideoLink,
 					 HtmlContent = c.HtmlContent,
 					 CatItemId = c.CatItemId,
 					 CategoryId = c.CategoryItem.Category.Id,
 					 CategoryName = c.CategoryItem.Category.Title
 				 })
-				 .FirstAsync();
+				 .FirstOrDefaultAsync();
+
+			if(contetModel == null)
+			{
+				_logger.LogError(nameof(ContentDetailsByCategoryItemId));
+				throw new ApplicationException("Could not find Content details for given categoryItemId");
+			}
+
+			return contetModel;
         }
 
         public async Task<ContentViewModel> ContentDetailsById(int id)
 		{
-			return await _repo.AllReadonly<Content>()
+			var content = await _repo.AllReadonly<Content>()
 					.Where(c => c.IsActive)
 					.Where(c => c.Id == id)
 					.Select(c => new ContentViewModel()
@@ -77,7 +85,16 @@ namespace SpaceWatch.Core.Services
 						HtmlContent = c.HtmlContent,
 						CategoryId = GetCategoryForContentAsync(id).Result.Id,
 						CategoryName = GetCategoryForContentAsync(id).Result.Title
-					}).FirstAsync();
+					})
+					.FirstOrDefaultAsync();
+
+			if(content == null)
+			{
+				_logger.LogError(nameof(ContentDetailsById));
+				throw new Exception("Could not find Content details for given Id");
+			}
+
+			return content;
 		}
 
 		public async Task<bool> ContentExists(int ContentId)

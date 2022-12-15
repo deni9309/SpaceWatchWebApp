@@ -41,7 +41,6 @@ namespace SpaceWatch.Core.Services.DefaultArea
 
 		public async Task<bool> UserNameExists(string userName)
 		{
-
 			bool userNameExists = await _repo.AllReadonly<ApplicationUser>()
 				.AnyAsync(u => u.UserName.ToUpper() == userName.ToUpper());
 
