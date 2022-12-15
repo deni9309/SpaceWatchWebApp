@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SpaceWatch.Core.Contracts;
+using SpaceWatch.Core.Extensions;
 using SpaceWatch.Core.Models;
 using SpaceWatch.Infrastructure.Common;
 using SpaceWatch.Infrastructure.Data.Entities;
@@ -26,7 +27,7 @@ namespace SpaceWatch.Core.Services
 				Title = model.Title,
 				CatItemId = model.CatItemId,
 				HtmlContent = model.HtmlContent,
-				VideoLink = model.VideoLink,
+				VideoLink = FormatUtilities.TrimVideoLink(model.VideoLink),
 				CategoryId = model.CategoryId
 			};
 
@@ -119,7 +120,7 @@ namespace SpaceWatch.Core.Services
             var content = await _repo.GetByIdAsync<Content>(id);
 
 			content.Title = model.Title;
-			content.VideoLink = model.VideoLink;
+			content.VideoLink = FormatUtilities.TrimVideoLink(model.VideoLink);
 			content.HtmlContent = model.HtmlContent;
 			content.CatItemId = model.CatItemId;
 
@@ -173,8 +174,6 @@ namespace SpaceWatch.Core.Services
 				_logger.LogError(nameof(GetCategoryForContentAsync), ex);
 				throw new ApplicationException("An error occured while trying to fetch category info for content!");
 			}
-
-			
 
 			return categoryForContent;
 		}
