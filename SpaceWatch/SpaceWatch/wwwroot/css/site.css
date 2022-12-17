@@ -202,6 +202,11 @@ body {
     color: rgb(255 95 20);
     background-color: #dedede;
 }
+.section-header-info {
+    padding: 20px;
+    color: rgba(0,0,0,0.2);
+    background-color: lightgray;
+}
 .text-orange {
     color: rgb(255 95 20);
 }
