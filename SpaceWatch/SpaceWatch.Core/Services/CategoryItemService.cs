@@ -4,6 +4,7 @@ using SpaceWatch.Core.Contracts;
 using SpaceWatch.Core.Models;
 using SpaceWatch.Infrastructure.Common;
 using SpaceWatch.Infrastructure.Data.Entities;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SpaceWatch.Core.Services
 {
@@ -160,10 +161,10 @@ namespace SpaceWatch.Core.Services
 					Id = c.Id,
 					Title = c.Title,
 					DateTimeItemReleased = c.DateTimeItemReleased,
-					Description = c.Description,
+					Description = c.Description.Length > 100 ?
+						$"{c.Description.Substring(0, 99)}<span class=\"highlighted-text\">...View details for more</span>" : c.Description,
 					ContentId = (_repo.AllReadonly<Content>().Any(co => co.CatItemId == c.Id) ?
-					(_repo.AllReadonly<Content>().First(co => co.CatItemId == c.Id).Id) : 0)
-					//GetContentIdForCategoryItem(c.Id)
+						(_repo.AllReadonly<Content>().First(co => co.CatItemId == c.Id).Id) : 0)
 				})
 				.ToListAsync();
 
@@ -188,17 +189,5 @@ namespace SpaceWatch.Core.Services
 				throw new ApplicationException("Ann error occured while trying to retrieve Category Title from database.", ex);
 			}
 		}
-		//private int GetContentIdForCategoryItem(int categoryItemId)
-		//{
-		//	//var content = _repo.AllReadonly<Content>()				
-		//	//	.Where(c => c.IsActive)
-		//	//	.FirstOrDefault(c => c.CatItemId == categoryItemId);
-		//	var content = _repo.AllReadonly<Content>().Where(co => co.CatItemId == categoryItemId).FirstOrDefault();
-		//	if (content != null)
-		//	{
-		//		return content.Id;
-		//	}
-		//	return 0;
-		//}
 	} 
 }

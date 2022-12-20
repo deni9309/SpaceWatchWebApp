@@ -6,11 +6,6 @@ using SpaceWatch.Core.Services.DefaultArea;
 using SpaceWatch.Infrastructure.Common;
 using SpaceWatch.Infrastructure.Data;
 using SpaceWatch.Infrastructure.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpaceWatch.NUnitTests
 {

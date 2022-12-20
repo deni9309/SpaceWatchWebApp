@@ -37,15 +37,7 @@
 								@item.Title
 							</td>
 							<td style="vertical-align:middle; width:20em" class="m-3">
-								@if (item.Description.Length > 100)
-								{
-									@item.Description.Substring(0, 100);
-									<span class="highlighted-text text-sm-0-8-rem">... View Details for more.</span>
-								}
-								else
-								{
-									@item.Description
-								}
+								@Html.Raw(item.Description)						
 							</td>
 							<td style="vertical-align:middle; width:15em">
 								<div class="m-2">

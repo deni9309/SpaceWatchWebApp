@@ -147,7 +147,8 @@ namespace SpaceWatch.Core.Services
 				.Select(c => new CategoryViewModel()
 				{
 					ThumbnailImagePath = c.ThumbnailImagePath,
-					Description = c.Description,
+					Description = c.Description.Length > 100 ? 
+					$"{c.Description.Substring(0, 99)}<span class=\"highlighted-text\">...View details for more</span>" : c.Description,
 					Title = c.Title,
 					Id = c.Id
 				})
